@@ -19,6 +19,12 @@ describe('renderMarkdown', () => {
     expect(html).toContain('<ol><li>primero</li><li>segundo</li></ol>')
   })
 
+  it('une las líneas que continúan una viñeta', () => {
+    const html = renderMarkdown('- primera línea\n  que sigue aquí\n- segunda')
+    expect(html).toContain('<li>primera línea que sigue aquí</li>')
+    expect(html).toContain('<li>segunda</li>')
+  })
+
   it('respeta los bloques de código sin interpretar su contenido', () => {
     const html = renderMarkdown('~~~ts\nconst a: number = 1\n~~~')
     expect(html).toContain('<pre><code class="language-ts">const a: number = 1</code></pre>')

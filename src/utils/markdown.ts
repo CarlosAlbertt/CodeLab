@@ -96,7 +96,12 @@ export function renderMarkdown(source: string): string {
       continue
     }
 
-    flushList()
+    // Linea que continua la vineta anterior: se pega a ella en vez de romper la lista.
+    if (list.length > 0) {
+      list[list.length - 1] += ` ${line.trim()}`
+      continue
+    }
+
     paragraph.push(line.trim())
   }
 
