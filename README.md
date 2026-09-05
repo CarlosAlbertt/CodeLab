@@ -4,9 +4,13 @@ Aplicación local para aprender a programar. Cada pista se recorre igual:
 
 **teoría → quiz de repaso → caso práctico → ... → proyecto final**
 
-Cada unidad tiene su apartado de teoría (con ejemplos y errores típicos), un quiz corto
-para rellenar huecos sobre esos mismos ejemplos y, detrás, un caso práctico con editor,
-tests y solución. Al final de la pista hay un proyecto completo
+Cada unidad tiene su apartado de teoría (con ejemplos y errores típicos), un quiz de
+repaso y, detrás, un caso práctico con editor, tests y solución. La pista empieza desde
+cero: la primera unidad explica qué es un programa, un valor, una variable y una función,
+sin dar nada por sabido.
+
+El quiz tiene cuatro formatos: escribir lo que falta, elegir una opción, **arrastrar
+fichas** a los huecos del código y **ordenar líneas** sueltas. Al final de la pista hay un proyecto completo
 que integra todo lo visto. El código se compila y se ejecuta de verdad, y los fallos se
 explican en castellano.
 
@@ -49,11 +53,25 @@ aplanando la cadena de `lib.es2020.d.ts`. No se versiona: se regenera en cada `d
 
 ## Contenido de la pista de TypeScript
 
-Ocho unidades — tipos y funciones, parámetros por defecto, `filter`/`map`/`reduce`,
-interfaces, uniones y narrowing, genéricos, clases y `async`/`await` — y un proyecto
-final, **Agenda de una clínica**, que junta las seis piezas: interfaces para los datos,
-unión discriminada para el resultado de reservar, una utilidad genérica, una clase con
-estado privado, arrays para consultarlo y `async` para importar pacientes.
+Once unidades, de menos a más:
+
+| | Unidad | De qué va |
+| --- | --- | --- |
+| 01 | Qué es programar | valores, variables, tipos, funciones |
+| 02 | Tipos básicos y funciones | anotaciones, plantillas, ternario |
+| 03 | Parámetros con valor por defecto | opcional vs por defecto, redondeo |
+| 04 | Decisiones | `if`/`else`, comparaciones, `&&` y `\|\|` |
+| 05 | Bucles | `while`, `for`, `for...of`, acumuladores |
+| 06 | Arrays | `filter`, `map`, `reduce` |
+| 07 | Interfaces y objetos | modelar datos |
+| 08 | Uniones | tipos literales y narrowing |
+| 09 | Genéricos | funciones como parámetro, `Record` |
+| 10 | Clases | estado privado, getters |
+| 11 | async / await | promesas y `try`/`catch` |
+
+Y un proyecto final, **Agenda de una clínica**, que junta las piezas: interfaces para los
+datos, unión discriminada para el resultado de reservar, una utilidad genérica, una clase
+con estado privado, arrays para consultarlo y `async` para importar pacientes.
 
 ## Añadir una unidad
 
@@ -61,8 +79,9 @@ estado privado, arrays para consultarlo y `async` para importar pacientes.
 2. Regístrala en `src/content/typescript/index.ts`.
 3. `npm test` comprueba que la solución pasa sus tests y que la plantilla inicial no.
 
-Campos: `quiz` son las preguntas de repaso (un fragmento con `___` donde va la respuesta,
-las respuestas válidas y la explicación); `theory` (el apartado previo) y `brief` (el
+Campos: `quiz` son las preguntas de repaso; cada una lleva `kind` (`fill`, `choice`,
+`drag` u `order`) y los datos de su formato — en `fill` y `drag` el fragmento marca los
+huecos con `___`; `theory` (el apartado previo) y `brief` (el
 enunciado) admiten Markdown ligero
 —encabezados `##`, listas con viñetas y numeradas, `**negrita**`, código con acentos
 graves y bloques con `~~~`—. Con `kind: 'project'` la unidad se lista aparte como cierre

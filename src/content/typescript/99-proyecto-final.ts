@@ -82,28 +82,53 @@ Y la utilidad genérica \`indexarPor(items, clave)\`, que convierte una lista en
 indexado por la clave que devuelva la función.`,
   quiz: [
     {
+      kind: 'fill',
       prompt: "Convierte la hora a minutos desde medianoche.",
       snippet: "return Number(partes[0]) * ___ + Number(partes[1])",
       answers: ["60"],
       explanation: "Cada hora son 60 minutos; así dos horas se pueden comparar como números.",
     },
     {
+      kind: 'fill',
       prompt: "Completa la condición de solapamiento entre dos citas.",
       snippet: "const seSolapan = desde < otroFin ___ otroDesde < hasta",
       answers: ["&&"],
       explanation: "Se pisan solo si las dos condiciones se cumplen a la vez.",
     },
     {
+      kind: 'fill',
       prompt: "Escribe el tipo que devuelve la utilidad genérica.",
       snippet: "function indexarPor<T>(items: T[], clave: (i: T) => string): Record<string, ___>",
       answers: ["T"],
       explanation: "Devuelve un objeto con los mismos elementos que entraron, indexados por su clave.",
     },
     {
+      kind: 'fill',
       prompt: "Descarta las canceladas antes de sumar los minutos.",
       snippet: "this.citas.___((cita) => cita.estado !== 'cancelada')",
       answers: ["filter"],
       explanation: "filter deja fuera las canceladas y reduce suma lo que queda.",
+    },
+    {
+      kind: "order",
+      prompt: "Ordena las comprobaciones de reservar.",
+      lines: ["if (!paciente) return { ok: false, motivo: 'paciente desconocido' }", "if (minutos <= 0) return { ok: false, motivo: 'duracion invalida' }", "if (seSolapa) return { ok: false, motivo: 'solapamiento' }", "this.citas.push(cita)"],
+      explanation: "Los casos de error se descartan primero, y solo cuando todo está bien se crea la cita.",
+    },
+    {
+      kind: "drag",
+      prompt: "Completa el acumulador del resumen.",
+      snippet: "for (const cita of this.citas) { conteo[cita.___]++ }",
+      blanks: ["estado"],
+      pool: ["estado", "id", "minutos"],
+      explanation: "El estado de la cita es justo la clave del objeto que se está contando.",
+    },
+    {
+      kind: "choice",
+      prompt: "¿Por qué las horas se convierten a minutos antes de comparar?",
+      options: ["Porque '09:30' ocupa menos memoria como número", "Porque comparar textos no dice cuál es antes en el tiempo", "Porque TypeScript no deja comparar strings"],
+      correct: 1,
+      explanation: "Comparar textos ordena carácter a carácter: '9:30' saldría después de '10:00', que es al revés de lo que quieres.",
     },
   ],
   starterCode: `type EstadoCita = 'pendiente' | 'confirmada' | 'cancelada'

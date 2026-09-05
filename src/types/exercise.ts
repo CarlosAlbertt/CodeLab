@@ -15,17 +15,52 @@ export interface TestCase {
   code: string
 }
 
-/** Pregunta de repaso: se rellena el hueco marcado con ___ en el fragmento. */
-export interface QuizQuestion {
+interface QuizBase {
   /** Qué se pide, en una línea. */
   prompt: string
-  /** Fragmento de código con ___ en el lugar que hay que completar. */
-  snippet: string
-  /** Respuestas válidas. Se comparan sin distinguir mayúsculas ni espacios. */
-  answers: string[]
-  /** Por qué es esa, para leerlo después de comprobar. */
+  /** Por qué es esa la respuesta. Se lee después de comprobar. */
   explanation: string
 }
+
+/** Rellenar un hueco escribiendo: el fragmento lleva ___ donde va la respuesta. */
+export interface FillQuestion extends QuizBase {
+  kind: 'fill'
+  snippet: string
+  /** Respuestas válidas; se comparan sin distinguir mayúsculas ni espacios. */
+  answers: string[]
+}
+
+/** Elegir una opción entre varias. */
+export interface ChoiceQuestion extends QuizBase {
+  kind: 'choice'
+  /** Código de apoyo sobre el que se pregunta (opcional). */
+  snippet?: string
+  options: string[]
+  /** Índice de la opción correcta dentro de `options`. */
+  correct: number
+}
+
+/** Arrastrar fichas a los huecos del fragmento (un ___ por hueco, en orden). */
+export interface DragQuestion extends QuizBase {
+  kind: 'drag'
+  snippet: string
+  /** Lo que va en cada hueco, en el mismo orden que aparecen. */
+  blanks: string[]
+  /** Fichas ofrecidas: las de los huecos más algún distractor. */
+  pool: string[]
+}
+
+/** Ordenar líneas sueltas hasta reconstruir el fragmento. */
+export interface OrderQuestion extends QuizBase {
+  kind: 'order'
+  /** Líneas en el orden correcto; se barajan al mostrarlas. */
+  lines: string[]
+}
+
+export type QuizQuestion = FillQuestion | ChoiceQuestion | DragQuestion | OrderQuestion
+
+/** Respuesta del alumno. Su forma depende del tipo de pregunta. */
+export type QuizAnswer = string | number | null | (number | null)[] | string[]
 
 export interface Exercise {
   /** Identificador estable usado en la URL y en el progreso guardado. */

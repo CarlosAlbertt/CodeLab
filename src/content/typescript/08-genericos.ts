@@ -1,12 +1,22 @@
 import type { Exercise } from '@/types/exercise'
 
 export const exercise: Exercise = {
-  id: 'ts-06-genericos',
+  id: 'ts-08-genericos',
   language: 'typescript',
   title: 'Genéricos y funciones como parámetro',
   difficulty: 3,
   concepts: ['genéricos', 'callbacks', 'Record', 'acumuladores'],
-  theory: `## Genéricos
+  theory: `## La idea
+
+Escribes una función que devuelve el primer elemento de una lista de números. Luego
+necesitas la misma para textos. Y para usuarios. Copiarla tres veces es absurdo, y poner
+\`any\` es rendirse: pierdes toda la ayuda del editor y todas las comprobaciones.
+
+Un **genérico** es un hueco dentro del tipo, que se rellena en el momento de llamar a la
+función. Escribes la función una vez, sirve para cualquier tipo, y en cada llamada
+TypeScript sigue sabiendo exactamente cuál es.
+
+## Genéricos
 
 Un genérico es un tipo que rellena quien llama a la función. Se declara entre \`< >\`:
 
@@ -69,22 +79,46 @@ Reglas:
 - Con un array vacío devuelve un objeto vacío.`,
   quiz: [
     {
+      kind: 'fill',
       prompt: "Declara el parámetro de tipo de la función.",
       snippet: "function primero___(items: T[]): T | undefined {}",
       answers: ["<T>"],
       explanation: "El genérico se declara entre < > justo después del nombre de la función.",
     },
     {
+      kind: 'fill',
       prompt: "Completa el tipo de una función que recibe T y devuelve string.",
       snippet: "clave: (item: T) ___ string",
       answers: ["=>"],
       explanation: "El tipo de una función se escribe con una flecha entre los parámetros y el retorno.",
     },
     {
+      kind: 'fill',
       prompt: "Escribe el tipo de un objeto con claves de texto y valores numéricos.",
       snippet: "const edades: ___<string, number> = {}",
       answers: ["Record"],
       explanation: "Record<K, V> describe un objeto cuyas claves son de tipo K y sus valores de tipo V.",
+    },
+    {
+      kind: "drag",
+      prompt: "Completa la firma de la función genérica.",
+      snippet: "function agrupar___(items: T[], clave: (item: T) ___ string): Record<string, ___> { }",
+      blanks: ["<T>", "=>", "T[]"],
+      pool: ["<T>", "=>", "T[]", "any"],
+      explanation: "T se declara entre < >, el tipo de una función lleva flecha, y cada grupo es una lista de T.",
+    },
+    {
+      kind: "choice",
+      prompt: "¿Cuál es el problema real de resolver esto con any?",
+      options: ["Que es más lento al ejecutarse", "Que el compilador deja de comprobar nada dentro", "Que any no existe en TypeScript"],
+      correct: 1,
+      explanation: "any apaga las comprobaciones. Un genérico da la misma flexibilidad sin renunciar a ellas.",
+    },
+    {
+      kind: "order",
+      prompt: "Ordena el cuerpo de agrupar.",
+      lines: ["const grupos: Record<string, T[]> = {}", "for (const item of items) {", "  const nombre = clave(item)", "  if (!grupos[nombre]) grupos[nombre] = []", "  grupos[nombre].push(item)", "}", "return grupos"],
+      explanation: "El acumulador se crea fuera del bucle, y dentro hay que inicializar el grupo antes del primer push.",
     },
   ],
   starterCode: `function agrupar<T>(items: T[], clave: (item: T) => string): Record<string, T[]> {

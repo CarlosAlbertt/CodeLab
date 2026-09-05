@@ -12,8 +12,8 @@ export const tracks: Track[] = [
     name: 'TypeScript',
     tagline: 'JavaScript con tipos comprobados',
     description:
-      'Ocho unidades con su teoría y su caso práctico, y un proyecto final que las integra. ' +
-      'Todo se compila con el compilador real de TypeScript en modo estricto.',
+      'Desde qué es una variable hasta async/await: once unidades con teoría, quiz y caso ' +
+      'práctico, más un proyecto final. Todo se compila con el compilador real de TypeScript.',
     status: 'ready',
     exercises: typescriptExercises,
   },

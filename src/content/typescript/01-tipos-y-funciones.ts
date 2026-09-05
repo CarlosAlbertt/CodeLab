@@ -6,7 +6,16 @@ export const exercise: Exercise = {
   title: 'Tipos básicos y funciones',
   difficulty: 1,
   concepts: ['string', 'number', 'boolean', 'funciones', 'plantillas'],
-  theory: `## Anotar tipos
+  theory: `## La idea
+
+Ya sabes que una variable guarda un valor y que una función hace un trabajo. Aquí nos
+fijamos en **los tipos**: lo que TypeScript añade a JavaScript.
+
+Un tipo es una promesa que le haces al compilador: *aquí dentro solo va a haber un número*.
+Si en cualquier punto del programa incumples esa promesa, te lo dice señalando la línea,
+antes de ejecutar nada. Ese es todo el truco, y es la razón de escribir TypeScript.
+
+## Anotar tipos
 
 En TypeScript cada variable y cada parámetro puede llevar una **anotación de tipo**
 después de dos puntos. El compilador comprueba que nunca le metas un valor que no encaje.
@@ -57,28 +66,54 @@ Luis (45) - inactivo
 Fíjate en los espacios: nombre, espacio, edad entre paréntesis, espacio, guion, espacio y el estado.`,
   quiz: [
     {
+      kind: 'fill',
       prompt: "Anota el tipo de la variable.",
       snippet: "const edad: ___ = 30",
       answers: ["number"],
       explanation: "En TypeScript todos los números son number: no se distingue entero de decimal.",
     },
     {
+      kind: 'fill',
       prompt: "Anota lo que devuelve la función.",
       snippet: "function doble(n: number): ___ { return n * 2 }",
       answers: ["number"],
       explanation: "El tipo de retorno va después del paréntesis y antes de la llave.",
     },
     {
+      kind: 'fill',
       prompt: "Completa la plantilla para que salude por nombre.",
       snippet: "const saludo = `Hola, ___`",
       answers: ["${nombre}"],
       explanation: "Dentro de comillas invertidas, ${} inserta el valor de una variable.",
     },
     {
+      kind: 'fill',
       prompt: "Completa el ternario para elegir entre los dos textos.",
       snippet: "const etiqueta = activo ___ 'activo' : 'inactivo'",
       answers: ["?"],
       explanation: "El ternario se escribe condicion ? valorSiTrue : valorSiFalse.",
+    },
+    {
+      kind: "drag",
+      prompt: "Coloca los tipos que faltan en la firma de la función.",
+      snippet: "function ficha(nombre: ___, edad: ___): ___ { }",
+      blanks: ["string", "number", "string"],
+      pool: ["string", "number", "boolean"],
+      explanation: "Recibe un texto y un número, y devuelve el texto ya montado. Lo de después de los dos puntos finales es siempre lo que sale.",
+    },
+    {
+      kind: "choice",
+      prompt: "¿Qué le pasa a esta línea?",
+      snippet: "const edad: number = '30'",
+      options: ["Nada: '30' se convierte solo a número", "Error: un string no encaja donde se declaró number", "Error: falta el punto y coma"],
+      correct: 1,
+      explanation: "'30' entre comillas es texto. TypeScript no convierte por su cuenta: te avisa antes de ejecutar.",
+    },
+    {
+      kind: "order",
+      prompt: "Ordena las líneas para que la función devuelva la ficha.",
+      lines: ["function ficha(nombre: string, activo: boolean): string {", "  const estado = activo ? 'activo' : 'inactivo'", "  return nombre + \" - \" + estado", "}"],
+      explanation: "Primero se calcula el estado y luego se usa: una variable no se puede usar antes de declararla.",
     },
   ],
   starterCode: `function ficha(nombre: string, edad: number, activo: boolean): string {

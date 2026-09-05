@@ -1,12 +1,22 @@
 import type { Exercise } from '@/types/exercise'
 
 export const exercise: Exercise = {
-  id: 'ts-03-arrays',
+  id: 'ts-05-arrays',
   language: 'typescript',
   title: 'Arrays: filter, map y reduce',
   difficulty: 2,
   concepts: ['arrays', 'filter', 'reduce', 'number[]'],
-  theory: `## Arrays tipados
+  theory: `## La idea
+
+Un array es una lista ordenada de valores: las notas de una clase, los productos de un
+carrito. Ya sabes recorrerlo con un \`for\`, así que podrías hacerlo todo a mano.
+
+Pero resulta que el 90% de lo que se hace con una lista son tres cosas: **quedarse con
+algunos**, **transformarlos todos** o **reducirlos a un único valor**. Y para esas tres hay
+métodos ya hechos. Son el bucle de la unidad anterior, con el acumulador bien puesto y sin
+posibilidad de equivocarte con los índices.
+
+## Arrays tipados
 
 \`number[]\` es un array de números; \`string[]\`, de textos. El compilador no te dejará
 meter un texto donde esperas números.
@@ -60,22 +70,46 @@ Si no hay ninguna nota aprobada, devuelve \`0\`.
 Ejemplo: \`[3, 7, 9, 5]\` → aprobadas \`[7, 9, 5]\` → media \`7\`.`,
   quiz: [
     {
+      kind: 'fill',
       prompt: "Quédate solo con las notas aprobadas.",
       snippet: "const aprobadas = notas.___((n) => n >= 5)",
       answers: ["filter"],
       explanation: "filter devuelve un array nuevo con los elementos que cumplen la condición.",
     },
     {
+      kind: 'fill',
       prompt: "Convierte cada nota a base 100.",
       snippet: "const sobre100 = notas.___((n) => n * 10)",
       answers: ["map"],
       explanation: "map transforma cada elemento y mantiene la misma cantidad.",
     },
     {
+      kind: 'fill',
       prompt: "Pon el valor inicial que le falta al acumulador.",
       snippet: "const suma = notas.reduce((acc, n) => acc + n, ___)",
       answers: ["0"],
       explanation: "Sin valor inicial, reduce falla cuando el array está vacío.",
+    },
+    {
+      kind: "order",
+      prompt: "Ordena la cadena que suma los precios de los productos activos.",
+      lines: ["const total = productos", "  .filter((p) => p.activo)", "  .map((p) => p.precio)", "  .reduce((suma, precio) => suma + precio, 0)"],
+      explanation: "Primero se descartan los inactivos, luego se queda solo el precio, y al final se acumula todo en un número.",
+    },
+    {
+      kind: "choice",
+      prompt: "Sobre un array de 5 elementos, ¿cuántos devuelve map?",
+      options: ["Solo los que cumplan una condición", "Siempre 5", "Uno solo"],
+      correct: 1,
+      explanation: "map transforma cada elemento y mantiene la cantidad. El que cambia la cantidad es filter.",
+    },
+    {
+      kind: "drag",
+      prompt: "Coloca el método que toca en cada paso.",
+      snippet: "const aprobadas = notas.___((n) => n >= 5)\nconst suma = aprobadas.___((acc, n) => acc + n, 0)",
+      blanks: ["filter", "reduce"],
+      pool: ["filter", "reduce", "map"],
+      explanation: "filter selecciona y reduce acumula. map no pinta nada aquí porque no queremos transformar las notas.",
     },
   ],
   starterCode: `function mediaAprobados(notas: number[]): number {

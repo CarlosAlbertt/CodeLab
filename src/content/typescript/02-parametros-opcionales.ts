@@ -6,7 +6,15 @@ export const exercise: Exercise = {
   title: 'Parámetros con valor por defecto',
   difficulty: 1,
   concepts: ['valores por defecto', 'number', 'redondeo'],
-  theory: `## Valores por defecto
+  theory: `## La idea
+
+Muchos datos casi siempre valen lo mismo: un descuento suele ser 0 y el IVA suele ser el
+21%. Obligar a escribirlos en cada llamada es ruido. Un **valor por defecto** dice: *si no
+me lo pasas, uso este*.
+
+Así la llamada corta sigue siendo corta, y la excepción sigue siendo posible.
+
+## Valores por defecto
 
 Un parámetro puede llevar un valor que se usa cuando quien llama a la función no lo pasa.
 TypeScript deduce el tipo a partir de ese valor, así que no hace falta anotarlo:
@@ -58,22 +66,40 @@ Por defecto el descuento es \`0\` y el IVA es \`21\`.
 Ejemplo: base \`100\`, descuento \`10\`, IVA \`21\` → \`90 * 1.21 = 108.9\`.`,
   quiz: [
     {
+      kind: 'fill',
       prompt: "Dale a saludo el valor por defecto 'Hola'.",
       snippet: "function saludar(nombre: string, saludo ___ 'Hola') {}",
       answers: ["="],
       explanation: "El valor por defecto se asigna con = en la propia lista de parámetros.",
     },
     {
+      kind: 'fill',
       prompt: "Marca apodo como opcional.",
       snippet: "function ficha(nombre: string, apodo___: string) {}",
       answers: ["?"],
       explanation: "El ? permite que el parámetro no llegue: su tipo pasa a ser string | undefined.",
     },
     {
+      kind: 'fill',
       prompt: "Completa el redondeo a dos decimales.",
       snippet: "const total = Math.round(valor * ___) / 100",
       answers: ["100"],
       explanation: "Multiplicar por 100, redondear y volver a dividir deja dos decimales.",
+    },
+    {
+      kind: "choice",
+      prompt: "¿Cuál de estas tres firmas no compila?",
+      options: ["function f(a: string, b = 1)", "function f(a = 1, b: string)", "function f(a: string, b?: number)"],
+      correct: 1,
+      explanation: "Un parámetro con valor por defecto no puede ir antes de uno obligatorio: nadie podría omitirlo.",
+    },
+    {
+      kind: "drag",
+      prompt: "Aplica primero el descuento y luego el IVA.",
+      snippet: "const conDescuento = base * (1 ___ descuento / 100)\nconst total = conDescuento * (1 ___ iva / 100)",
+      blanks: ["-", "+"],
+      pool: ["-", "+", "*"],
+      explanation: "El descuento resta y el IVA suma, y el IVA se aplica sobre el precio ya rebajado.",
     },
   ],
   starterCode: `function precioFinal(base: number, descuento = 0, iva = 21): number {

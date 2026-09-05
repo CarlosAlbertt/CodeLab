@@ -1,12 +1,22 @@
 import type { Exercise } from '@/types/exercise'
 
 export const exercise: Exercise = {
-  id: 'ts-04-interfaces',
+  id: 'ts-06-interfaces',
   language: 'typescript',
   title: 'Interfaces y objetos',
   difficulty: 2,
   concepts: ['interface', 'objetos', 'arrays de objetos'],
-  theory: `## Describir la forma de un objeto
+  theory: `## La idea
+
+Hasta ahora tus datos eran valores sueltos: un nombre por un lado, una edad por otro. En
+cuanto el programa crece, esos valores viajan juntos: *el paciente* tiene nombre, edad y
+teléfono, y se pasan de una función a otra como una sola cosa. Eso es un **objeto**.
+
+Una \`interface\` es la ficha que dice qué campos tiene ese objeto y de qué tipo es cada
+uno. Como el formulario en papel de una consulta: los huecos están definidos de antemano y,
+si te dejas uno, alguien se da cuenta. Ese alguien es el compilador.
+
+## Describir la forma de un objeto
 
 Una \`interface\` pone nombre a la forma que debe tener un objeto. No genera código:
 solo existe mientras el compilador comprueba tu programa.
@@ -67,22 +77,46 @@ Una interfaz solo vive mientras el compilador comprueba tu código: no genera na
 donde el último número es la **suma de los minutos de todas las citas** (confirmadas o no).`,
   quiz: [
     {
+      kind: 'fill',
       prompt: "Declara la forma que debe tener un objeto.",
       snippet: "___ Usuario { nombre: string }",
       answers: ["interface"],
       explanation: "interface pone nombre a la forma de un objeto; no genera código.",
     },
     {
+      kind: 'fill',
       prompt: "Haz que el teléfono pueda no venir.",
       snippet: "interface Usuario { telefono___: string }",
       answers: ["?"],
       explanation: "El ? marca la propiedad como opcional: su tipo pasa a ser string | undefined.",
     },
     {
+      kind: 'fill',
       prompt: "Escribe el tipo de una lista de usuarios.",
       snippet: "const lista: ___ = []",
       answers: ["Usuario[]", "Array<Usuario>"],
       explanation: "Añadir [] al final de un tipo indica un array de ese tipo.",
+    },
+    {
+      kind: "order",
+      prompt: "Ordena la declaración de la interfaz.",
+      lines: ["interface Cita {", "  paciente: string", "  minutos: number", "  confirmada: boolean", "}"],
+      explanation: "Cada propiedad va en su línea, con su tipo, dentro de las llaves.",
+    },
+    {
+      kind: "choice",
+      prompt: "¿Qué queda de una interface cuando el programa se ejecuta?",
+      options: ["Se convierte en una clase", "Nada: solo existe mientras se compila", "Una función que valida los datos"],
+      correct: 1,
+      explanation: "Por eso, si los datos vienen de una API, hay que comprobarlos a mano: el compilador se fía de lo que le dijiste.",
+    },
+    {
+      kind: "drag",
+      prompt: "Completa el resumen de la agenda.",
+      snippet: "const confirmadas = citas.___((c) => c.confirmada).___\nconst minutos = citas.___((total, c) => total + c.minutos, 0)",
+      blanks: ["filter", "length", "reduce"],
+      pool: ["filter", "length", "reduce", "map"],
+      explanation: "Contar es filtrar y mirar la longitud; sumar es acumular con reduce.",
     },
   ],
   starterCode: `interface Cita {

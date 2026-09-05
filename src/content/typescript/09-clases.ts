@@ -1,12 +1,22 @@
 import type { Exercise } from '@/types/exercise'
 
 export const exercise: Exercise = {
-  id: 'ts-07-clases',
+  id: 'ts-09-clases',
   language: 'typescript',
   title: 'Clases, estado privado y getters',
   difficulty: 2,
   concepts: ['class', 'private', 'métodos', 'getters'],
-  theory: `## Clases
+  theory: `## La idea
+
+Una clase junta en un mismo sitio unos datos y las operaciones que los tocan. En vez de
+tener por ahí suelto un array de productos y varias funciones que lo modifican, tienes un
+\`Carrito\` que guarda sus productos y es el único que sabe cómo cambiarlos.
+
+La ventaja no es escribir menos código: es que el estado no se pueda estropear desde fuera.
+Si solo se toca a través de los métodos, son esos métodos los que garantizan que siempre
+sea coherente.
+
+## Clases
 
 Una clase junta datos y las operaciones que los manipulan:
 
@@ -79,22 +89,46 @@ Equivale a declarar \`private saldo\` y asignarla dentro, pero en una línea.
 - \`vaciar(): void\` deja el carrito sin productos.`,
   quiz: [
     {
+      kind: 'fill',
       prompt: "Impide que se toque la propiedad desde fuera.",
       snippet: "class Contador { ___ valor = 0 }",
       answers: ["private"],
       explanation: "private obliga a pasar por los métodos de la clase para cambiar el estado.",
     },
     {
+      kind: 'fill',
       prompt: "Accede a la propiedad desde dentro del método.",
       snippet: "leer(): number { return ___.valor }",
       answers: ["this"],
       explanation: "Sin this, TypeScript busca una variable suelta en vez de la propiedad.",
     },
     {
+      kind: 'fill',
       prompt: "Convierte el método en un getter.",
       snippet: "___ actual(): number { return this.valor }",
       answers: ["get"],
       explanation: "Un getter se declara con get y se lee como una propiedad, sin paréntesis.",
+    },
+    {
+      kind: "order",
+      prompt: "Ordena una clase con estado privado.",
+      lines: ["class Contador {", "  private valor = 0", "  incrementar(): void {", "    this.valor++", "  }", "}"],
+      explanation: "Las propiedades se declaran arriba y los métodos después, todo dentro de las llaves de la clase.",
+    },
+    {
+      kind: "drag",
+      prompt: "Completa el getter que expone el valor.",
+      snippet: "___ actual(): number { return ___.valor }",
+      blanks: ["get", "this"],
+      pool: ["get", "this", "private", "return"],
+      explanation: "get lo convierte en getter, y this. es lo que apunta a la propiedad de esta instancia.",
+    },
+    {
+      kind: "choice",
+      prompt: "¿Cómo se lee un getter llamado cantidad?",
+      options: ["carrito.cantidad()", "carrito.cantidad", "carrito.get(cantidad)"],
+      correct: 1,
+      explanation: "Se declara como método pero se lee como propiedad: sin paréntesis.",
     },
   ],
   starterCode: `class Carrito {

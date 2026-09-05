@@ -3,7 +3,7 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 import { compileAndRun } from '@/engine/worker/core'
-import { isCorrect } from '@/utils/quiz'
+import { correctAnswerText, initialAnswer, isQuestionCorrect } from '@/utils/quiz'
 import { tracks } from '@/content'
 
 /**
@@ -36,14 +36,41 @@ describe('pista de TypeScript', () => {
   for (const exercise of typescriptTrack.exercises) {
     it(`${exercise.id}: el quiz está bien formado`, () => {
       for (const question of exercise.quiz) {
-        // Sin el hueco no hay donde escribir la respuesta.
-        expect(question.snippet, question.prompt).toContain('___')
-        expect(question.answers.length, question.prompt).toBeGreaterThan(0)
-        // La respuesta que se muestra al rendirse tiene que darse por buena.
-        expect(isCorrect(question.answers[0]!, question.answers), question.prompt).toBe(true)
+        expect(correctAnswerText(question), question.prompt).not.toBe('')
+
+        if (question.kind === 'fill') {
+          // Sin el hueco no hay dónde escribir la respuesta.
+          expect(question.snippet, question.prompt).toContain('___')
+          expect(question.answers.length, question.prompt).toBeGreaterThan(0)
+        }
+
+        if (question.kind === 'choice') {
+          expect(question.options.length, question.prompt).toBeGreaterThan(1)
+          expect(question.options[question.correct], question.prompt).toBeDefined()
+        }
+
+        if (question.kind === 'drag') {
+          // Un hueco por ficha esperada, y todas las respuestas en el montón.
+          expect(question.snippet.split('___').length - 1, question.prompt).toBe(question.blanks.length)
+          expect(question.pool.length, question.prompt).toBeGreaterThanOrEqual(question.blanks.length)
+          for (const blank of question.blanks) {
+            expect(question.pool, question.prompt).toContain(blank)
+          }
+        }
+
+        if (question.kind === 'order') {
+          expect(question.lines.length, question.prompt).toBeGreaterThan(1)
+          // Barajar exige que no haya lineas repetidas: se usan como clave.
+          expect(new Set(question.lines).size, question.prompt).toBe(question.lines.length)
+        }
       }
     })
 
+    it(`${exercise.id}: el quiz empieza sin resolver`, () => {
+      for (const question of exercise.quiz) {
+        expect(isQuestionCorrect(question, initialAnswer(question)), question.prompt).toBe(false)
+      }
+    })
 
     it(`${exercise.id}: la solución pasa todos sus tests`, async () => {
       const result = await compileAndRun(libText, exercise.solution, exercise.tests)

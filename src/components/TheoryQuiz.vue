@@ -1,32 +1,37 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import type { QuizQuestion } from '@/types/exercise'
-import { isCorrect } from '@/utils/quiz'
+import type { QuizAnswer, QuizQuestion } from '@/types/exercise'
+import { correctAnswerText, initialAnswer, isQuestionCorrect } from '@/utils/quiz'
+import QuizFill from '@/components/quiz/QuizFill.vue'
+import QuizChoice from '@/components/quiz/QuizChoice.vue'
+import QuizDrag from '@/components/quiz/QuizDrag.vue'
+import QuizOrder from '@/components/quiz/QuizOrder.vue'
 
 const props = defineProps<{ questions: QuizQuestion[] }>()
 
-const given = ref<string[]>(props.questions.map(() => ''))
+const answers = ref<QuizAnswer[]>(props.questions.map(initialAnswer))
 const checked = ref(false)
 const revealed = ref(false)
 
 const results = computed(() =>
-  props.questions.map((question, index) => isCorrect(given.value[index] ?? '', question.answers)),
+  props.questions.map((question, index) => isQuestionCorrect(question, answers.value[index]!)),
 )
 const rightCount = computed(() => results.value.filter(Boolean).length)
 const allRight = computed(() => rightCount.value === props.questions.length)
 
-/** El fragmento se parte por ___ para meter el campo dentro del propio código. */
-function pieces(snippet: string): [string, string] {
-  const index = snippet.indexOf('___')
-  return index === -1 ? [snippet, ''] : [snippet.slice(0, index), snippet.slice(index + 3)]
+const HELP: Record<QuizQuestion['kind'], string> = {
+  fill: 'Escribe lo que falta',
+  choice: 'Elige una opción',
+  drag: 'Arrastra las fichas a su hueco',
+  order: 'Ordena las líneas',
 }
 
-function check() {
-  checked.value = true
+function setAnswer(index: number, value: QuizAnswer) {
+  answers.value[index] = value
 }
 
 function retry() {
-  given.value = props.questions.map(() => '')
+  answers.value = props.questions.map(initialAnswer)
   checked.value = false
   revealed.value = false
 }
@@ -36,7 +41,7 @@ function retry() {
   <section class="rounded-xl border border-line bg-ink-900/60 p-6">
     <h2 class="text-xl font-semibold">Comprueba que lo has cogido</h2>
     <p class="mt-1.5 text-base text-muted">
-      Rellena el hueco de cada ejemplo. No cuenta para el progreso: es solo para ti.
+      Un repaso rápido de cada punto. No cuenta para el progreso: es solo para ti.
     </p>
 
     <ol class="mt-6 space-y-5">
@@ -52,27 +57,52 @@ function retry() {
               : 'border-fail/30 border-l-fail bg-fail/5'
         "
       >
-        <p class="flex items-start gap-2.5 text-base">
+        <div class="mb-3 flex items-start gap-2.5">
           <span class="font-mono text-sm text-muted">{{ index + 1 }}</span>
-          <span>{{ question.prompt }}</span>
-          <span v-if="checked" class="ml-auto shrink-0" :class="results[index] ? 'text-pass' : 'text-fail'">
+          <div class="min-w-0 flex-1">
+            <p class="text-base">{{ question.prompt }}</p>
+            <p class="mt-0.5 text-sm text-muted">{{ HELP[question.kind] }}</p>
+          </div>
+          <span v-if="checked" class="shrink-0" :class="results[index] ? 'text-pass' : 'text-fail'">
             {{ results[index] ? '✓' : '✗' }}
           </span>
-        </p>
+        </div>
 
-        <pre class="mt-3 overflow-x-auto rounded-md border border-line bg-ink-900 p-3.5 font-mono text-sm leading-relaxed text-fg/80"><span>{{ pieces(question.snippet)[0] }}</span><input
-          v-model="given[index]"
-          type="text"
-          spellcheck="false"
-          autocomplete="off"
-          class="mx-0.5 w-32 rounded border-b-2 bg-ink-800 px-2 py-0.5 font-mono text-sm text-fg outline-none transition-colors focus:border-accent"
-          :class="!checked ? 'border-line' : results[index] ? 'border-pass' : 'border-fail'"
-          @keyup.enter="check"
-        /><span>{{ pieces(question.snippet)[1] }}</span></pre>
+        <QuizFill
+          v-if="question.kind === 'fill'"
+          :question="question"
+          :answer="(answers[index] as string)"
+          :checked="checked"
+          :correct="results[index]!"
+          @update:answer="setAnswer(index, $event)"
+          @submit="checked = true"
+        />
+        <QuizChoice
+          v-else-if="question.kind === 'choice'"
+          :question="question"
+          :answer="(answers[index] as number | null)"
+          :checked="checked"
+          :correct="results[index]!"
+          @update:answer="setAnswer(index, $event)"
+        />
+        <QuizDrag
+          v-else-if="question.kind === 'drag'"
+          :question="question"
+          :answer="(answers[index] as (number | null)[])"
+          :checked="checked"
+          @update:answer="setAnswer(index, $event)"
+        />
+        <QuizOrder
+          v-else
+          :question="question"
+          :answer="(answers[index] as string[])"
+          :checked="checked"
+          @update:answer="setAnswer(index, $event)"
+        />
 
         <p v-if="checked && (results[index] || revealed)" class="mt-3 text-sm text-muted">
           <span v-if="!results[index]" class="font-mono text-fail">
-            {{ question.answers[0] }} —
+            {{ correctAnswerText(question) }} —
           </span>
           {{ question.explanation }}
         </p>
@@ -83,7 +113,7 @@ function retry() {
       <button
         type="button"
         class="rounded-lg border border-accent/40 bg-accent/15 px-4 py-2 text-base font-medium text-accent transition-colors hover:bg-accent/25"
-        @click="check"
+        @click="checked = true"
       >
         Comprobar
       </button>

@@ -1,12 +1,22 @@
 import type { Exercise } from '@/types/exercise'
 
 export const exercise: Exercise = {
-  id: 'ts-05-uniones',
+  id: 'ts-07-uniones',
   language: 'typescript',
   title: 'Uniones y estrechamiento de tipos',
   difficulty: 2,
   concepts: ['type', 'union', 'narrowing', 'unión discriminada'],
-  theory: `## Tipos unión
+  theory: `## La idea
+
+Hay cosas que solo pueden ser una de entre unas pocas opciones: un semáforo está en rojo,
+ámbar o verde, y no hay más. Una petición está cargando o ya tiene datos, pero nunca las
+dos a la vez.
+
+Un **tipo unión** dice exactamente eso. Y a cambio el compilador se pone estricto: no te
+deja tocar los datos de un caso mientras no hayas comprobado que estás en ese caso. Suena
+molesto, y es justo lo que evita la mitad de los fallos en producción.
+
+## Tipos unión
 
 Una unión dice "esto puede ser una cosa **o** la otra":
 
@@ -64,22 +74,47 @@ Antes del \`if\`, el tipo es la unión entera y solo puedes usar lo que comparte
    - \`Fallo: sin conexion\` cuando el estado es \`error\` (con su mensaje).`,
   quiz: [
     {
+      kind: 'fill',
       prompt: "Une los dos tipos en una unión.",
       snippet: "type Id = string ___ number",
       answers: ["|"],
       explanation: "La barra vertical separa las opciones: el valor será una u otra.",
     },
     {
+      kind: 'fill',
       prompt: "Comprueba que es texto antes de usarlo como tal.",
       snippet: "if (___ id === 'string') { id.toUpperCase() }",
       answers: ["typeof"],
       explanation: "typeof estrecha el tipo: dentro del if, TypeScript ya sabe que es string.",
     },
     {
+      kind: 'fill',
       prompt: "Haz que estado solo admita ese texto exacto.",
       snippet: "type Ok = { estado: ___; valor: number }",
       answers: ["'ok'"],
       explanation: "Un tipo literal admite un único valor, y por eso sirve para discriminar la unión.",
+    },
+    {
+      kind: "drag",
+      prompt: "Monta la unión discriminada.",
+      snippet: "type Resultado = { estado: ___; valor: number } ___ { estado: 'error'; mensaje: string }",
+      blanks: ["'ok'", "|"],
+      pool: ["'ok'", "|", "&", "string"],
+      explanation: "El literal 'ok' es lo que distingue un caso del otro, y la barra vertical une las dos opciones.",
+    },
+    {
+      kind: "choice",
+      prompt: "Dentro de este if, ¿qué sabe TypeScript?",
+      snippet: "if (resultado.estado === 'ok') { }",
+      options: ["Que resultado tiene mensaje", "Que resultado tiene valor", "Nada nuevo: sigue siendo la unión entera"],
+      correct: 1,
+      explanation: "Al comprobar la propiedad que discrimina, el tipo se estrecha y solo queda la opción con valor.",
+    },
+    {
+      kind: "order",
+      prompt: "Ordena la función que describe el resultado.",
+      lines: ["function describir(resultado: Resultado): string {", "  if (resultado.estado === 'ok') {", "    return 'Correcto: ' + resultado.valor", "  }", "  return 'Fallo: ' + resultado.mensaje", "}"],
+      explanation: "Se comprueba el caso bueno y se sale con return; lo que queda después ya solo puede ser el error.",
     },
   ],
   starterCode: `type Resultado = never // sustituye esto por la unión
