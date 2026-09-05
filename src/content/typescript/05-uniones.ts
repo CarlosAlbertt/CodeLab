@@ -62,6 +62,26 @@ Antes del \`if\`, el tipo es la unión entera y solo puedes usar lo que comparte
 2. Implementa \`describir(resultado: Resultado): string\` que devuelve:
    - \`Correcto: 42\` cuando el estado es \`ok\` (con su valor).
    - \`Fallo: sin conexion\` cuando el estado es \`error\` (con su mensaje).`,
+  quiz: [
+    {
+      prompt: "Une los dos tipos en una unión.",
+      snippet: "type Id = string ___ number",
+      answers: ["|"],
+      explanation: "La barra vertical separa las opciones: el valor será una u otra.",
+    },
+    {
+      prompt: "Comprueba que es texto antes de usarlo como tal.",
+      snippet: "if (___ id === 'string') { id.toUpperCase() }",
+      answers: ["typeof"],
+      explanation: "typeof estrecha el tipo: dentro del if, TypeScript ya sabe que es string.",
+    },
+    {
+      prompt: "Haz que estado solo admita ese texto exacto.",
+      snippet: "type Ok = { estado: ___; valor: number }",
+      answers: ["'ok'"],
+      explanation: "Un tipo literal admite un único valor, y por eso sirve para discriminar la unión.",
+    },
+  ],
   starterCode: `type Resultado = never // sustituye esto por la unión
 
 function describir(resultado: Resultado): string {

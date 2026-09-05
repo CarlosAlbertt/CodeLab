@@ -3,6 +3,7 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 import { compileAndRun } from '@/engine/worker/core'
+import { isCorrect } from '@/utils/quiz'
 import { tracks } from '@/content'
 
 /**
@@ -26,7 +27,24 @@ describe('pista de TypeScript', () => {
     expect(new Set(ids).size).toBe(ids.length)
   })
 
+  it('todas las unidades traen quiz de repaso', () => {
+    for (const exercise of typescriptTrack.exercises) {
+      expect(exercise.quiz.length, exercise.id).toBeGreaterThan(0)
+    }
+  })
+
   for (const exercise of typescriptTrack.exercises) {
+    it(`${exercise.id}: el quiz está bien formado`, () => {
+      for (const question of exercise.quiz) {
+        // Sin el hueco no hay donde escribir la respuesta.
+        expect(question.snippet, question.prompt).toContain('___')
+        expect(question.answers.length, question.prompt).toBeGreaterThan(0)
+        // La respuesta que se muestra al rendirse tiene que darse por buena.
+        expect(isCorrect(question.answers[0]!, question.answers), question.prompt).toBe(true)
+      }
+    })
+
+
     it(`${exercise.id}: la solución pasa todos sus tests`, async () => {
       const result = await compileAndRun(libText, exercise.solution, exercise.tests)
 

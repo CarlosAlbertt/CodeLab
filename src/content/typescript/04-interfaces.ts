@@ -65,6 +65,26 @@ Una interfaz solo vive mientras el compilador comprueba tu código: no genera na
 ~~~
 
 donde el último número es la **suma de los minutos de todas las citas** (confirmadas o no).`,
+  quiz: [
+    {
+      prompt: "Declara la forma que debe tener un objeto.",
+      snippet: "___ Usuario { nombre: string }",
+      answers: ["interface"],
+      explanation: "interface pone nombre a la forma de un objeto; no genera código.",
+    },
+    {
+      prompt: "Haz que el teléfono pueda no venir.",
+      snippet: "interface Usuario { telefono___: string }",
+      answers: ["?"],
+      explanation: "El ? marca la propiedad como opcional: su tipo pasa a ser string | undefined.",
+    },
+    {
+      prompt: "Escribe el tipo de una lista de usuarios.",
+      snippet: "const lista: ___ = []",
+      answers: ["Usuario[]", "Array<Usuario>"],
+      explanation: "Añadir [] al final de un tipo indica un array de ese tipo.",
+    },
+  ],
   starterCode: `interface Cita {
   // Declara aquí las propiedades
 }

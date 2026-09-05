@@ -77,6 +77,26 @@ Equivale a declarar \`private saldo\` y asignarla dentro, pero en una línea.
 - Un **getter** \`cantidad\` con el número de productos.
 - \`total(): number\` con la suma de los precios, redondeada a dos decimales.
 - \`vaciar(): void\` deja el carrito sin productos.`,
+  quiz: [
+    {
+      prompt: "Impide que se toque la propiedad desde fuera.",
+      snippet: "class Contador { ___ valor = 0 }",
+      answers: ["private"],
+      explanation: "private obliga a pasar por los métodos de la clase para cambiar el estado.",
+    },
+    {
+      prompt: "Accede a la propiedad desde dentro del método.",
+      snippet: "leer(): number { return ___.valor }",
+      answers: ["this"],
+      explanation: "Sin this, TypeScript busca una variable suelta en vez de la propiedad.",
+    },
+    {
+      prompt: "Convierte el método en un getter.",
+      snippet: "___ actual(): number { return this.valor }",
+      answers: ["get"],
+      explanation: "Un getter se declara con get y se lee como una propiedad, sin paréntesis.",
+    },
+  ],
   starterCode: `class Carrito {
   private items: { nombre: string; precio: number }[] = []
 

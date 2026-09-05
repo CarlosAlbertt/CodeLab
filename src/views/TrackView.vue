@@ -3,6 +3,8 @@ import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { findTrack } from '@/content'
 import { useProgress } from '@/composables/useProgress'
+import { LANGUAGE_STYLE } from '@/utils/tracks'
+import LevelBadge from '@/components/LevelBadge.vue'
 
 const props = defineProps<{ trackId: string }>()
 
@@ -12,63 +14,70 @@ const units = computed(() => track.value?.exercises.filter((item) => item.kind !
 const project = computed(() => track.value?.exercises.find((item) => item.kind === 'project'))
 
 const { isCompleted, trackProgress } = useProgress()
-
-const DIFFICULTY_LABEL: Record<number, string> = {
-  1: 'introducción',
-  2: 'práctica',
-  3: 'reto',
-}
+const progress = computed(() => (track.value ? trackProgress(track.value.id) : { done: 0, total: 0 }))
 </script>
 
 <template>
   <main v-if="track" class="mx-auto max-w-4xl px-6 py-14">
-    <RouterLink to="/" class="text-xs text-muted hover:text-fg">← todas las pistas</RouterLink>
+    <RouterLink to="/" class="text-sm text-muted hover:text-fg">← todas las pistas</RouterLink>
 
-    <div class="mt-4 flex items-baseline justify-between gap-4">
-      <h1 class="text-2xl font-semibold tracking-tight">{{ track.name }}</h1>
-      <span class="font-mono text-xs text-muted">
-        {{ trackProgress(track.id).done }}/{{ trackProgress(track.id).total }} superados
+    <div class="mt-5 flex flex-wrap items-center gap-3">
+      <span class="size-3 rounded-full" :class="LANGUAGE_STYLE[track.id].dot" />
+      <h1 class="text-3xl font-semibold tracking-tight">{{ track.name }}</h1>
+      <span class="ml-auto font-mono text-sm text-muted">
+        <span :class="LANGUAGE_STYLE[track.id].text">{{ progress.done }}</span>/{{ progress.total }}
+        superados
       </span>
     </div>
-    <p class="mt-2 max-w-2xl text-sm leading-relaxed text-muted">{{ track.description }}</p>
 
-    <p class="mt-8 text-xs uppercase tracking-wider text-muted">Unidades</p>
-    <ol class="mt-3 divide-y divide-line border-y border-line">
+    <!-- Barra de avance: el color de la pista sobre la linea neutra. -->
+    <div class="mt-4 h-1 overflow-hidden rounded-full bg-line">
+      <div
+        class="h-full rounded-full transition-all"
+        :class="LANGUAGE_STYLE[track.id].dot"
+        :style="{ width: `${progress.total ? (progress.done / progress.total) * 100 : 0}%` }"
+      />
+    </div>
+
+    <p class="mt-5 max-w-2xl text-base leading-relaxed text-muted">{{ track.description }}</p>
+
+    <h2 class="mt-12 text-sm font-medium uppercase tracking-wider text-muted">Unidades</h2>
+    <ol class="mt-4 divide-y divide-line border-y border-line">
       <li
         v-for="(exercise, index) in units"
         :key="exercise.id"
-        class="flex flex-wrap items-center gap-x-4 gap-y-2 py-4"
+        class="flex flex-wrap items-center gap-x-5 gap-y-3 py-5"
       >
-        <span class="w-8 shrink-0 pl-1 font-mono text-xs text-muted">
-          {{ String(index + 1).padStart(2, '0') }}
-        </span>
         <span
-          class="w-4 shrink-0 font-mono text-xs"
-          :class="isCompleted(exercise.id) ? 'text-pass' : 'text-line'"
-          :aria-label="isCompleted(exercise.id) ? 'superado' : 'pendiente'"
+          class="flex size-8 shrink-0 items-center justify-center rounded-full border font-mono text-xs"
+          :class="
+            isCompleted(exercise.id)
+              ? 'border-pass/40 bg-pass/10 text-pass'
+              : 'border-line text-muted'
+          "
         >
-          {{ isCompleted(exercise.id) ? '✓' : '·' }}
+          {{ isCompleted(exercise.id) ? '✓' : String(index + 1).padStart(2, '0') }}
         </span>
+
         <span class="min-w-0 flex-1">
-          <span class="block truncate">{{ exercise.title }}</span>
-          <span class="mt-0.5 block truncate text-xs text-muted">
+          <span class="block truncate text-lg">{{ exercise.title }}</span>
+          <span class="mt-1 block truncate text-sm text-muted">
             {{ exercise.concepts.join(' · ') }}
           </span>
         </span>
-        <span class="hidden shrink-0 text-xs text-muted sm:inline">
-          {{ DIFFICULTY_LABEL[exercise.difficulty] }}
-        </span>
-        <span class="flex shrink-0 items-center gap-3 pr-1 text-xs">
+
+        <LevelBadge :difficulty="exercise.difficulty" />
+
+        <span class="flex shrink-0 items-center gap-3 text-sm">
           <RouterLink
             :to="{ name: 'lesson', params: { trackId: track.id, exerciseId: exercise.id } }"
-            class="text-accent hover:underline"
+            class="rounded-md border border-accent/40 bg-accent/10 px-3 py-1.5 text-accent transition-colors hover:bg-accent/20"
           >
             Teoría
           </RouterLink>
-          <span class="text-line">|</span>
           <RouterLink
             :to="{ name: 'exercise', params: { trackId: track.id, exerciseId: exercise.id } }"
-            class="text-muted hover:text-fg"
+            class="rounded-md border border-line px-3 py-1.5 text-muted transition-colors hover:border-fg/30 hover:text-fg"
           >
             Práctica
           </RouterLink>
@@ -77,25 +86,25 @@ const DIFFICULTY_LABEL: Record<number, string> = {
     </ol>
 
     <template v-if="project">
-      <p class="mt-12 text-xs uppercase tracking-wider text-muted">Cierre de la pista</p>
+      <h2 class="mt-14 text-sm font-medium uppercase tracking-wider text-muted">
+        Cierre de la pista
+      </h2>
       <RouterLink
         :to="{ name: 'lesson', params: { trackId: track.id, exerciseId: project.id } }"
-        class="mt-3 block rounded-lg border border-line p-5 transition-colors hover:bg-ink-900"
+        class="mt-4 block rounded-xl border border-lang-sql/30 bg-lang-sql/5 p-6 transition-colors hover:border-lang-sql/60 hover:bg-lang-sql/10"
       >
-        <div class="flex items-baseline justify-between gap-4">
-          <h2 class="text-base font-medium">
-            {{ project.title }}
-            <span v-if="isCompleted(project.id)" class="ml-1 text-sm text-pass">✓</span>
-          </h2>
-          <span class="shrink-0 text-xs text-muted">proyecto final</span>
+        <div class="flex flex-wrap items-center gap-3">
+          <h3 class="text-xl font-medium">{{ project.title }}</h3>
+          <span v-if="isCompleted(project.id)" class="text-lg text-pass">✓</span>
+          <LevelBadge class="ml-auto" :difficulty="project.difficulty" kind="project" />
         </div>
-        <p class="mt-1.5 text-xs text-muted">{{ project.concepts.join(' · ') }}</p>
+        <p class="mt-2 text-sm text-muted">{{ project.concepts.join(' · ') }}</p>
       </RouterLink>
     </template>
   </main>
 
   <main v-else class="mx-auto max-w-4xl px-6 py-14">
     <p class="text-muted">Esa pista no existe.</p>
-    <RouterLink to="/" class="mt-4 inline-block text-sm text-accent">Volver al inicio</RouterLink>
+    <RouterLink to="/" class="mt-4 inline-block text-accent">Volver al inicio</RouterLink>
   </main>
 </template>

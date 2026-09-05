@@ -58,6 +58,26 @@ notas iguales o mayores que 5**, redondeada a dos decimales.
 Si no hay ninguna nota aprobada, devuelve \`0\`.
 
 Ejemplo: \`[3, 7, 9, 5]\` → aprobadas \`[7, 9, 5]\` → media \`7\`.`,
+  quiz: [
+    {
+      prompt: "Quédate solo con las notas aprobadas.",
+      snippet: "const aprobadas = notas.___((n) => n >= 5)",
+      answers: ["filter"],
+      explanation: "filter devuelve un array nuevo con los elementos que cumplen la condición.",
+    },
+    {
+      prompt: "Convierte cada nota a base 100.",
+      snippet: "const sobre100 = notas.___((n) => n * 10)",
+      answers: ["map"],
+      explanation: "map transforma cada elemento y mantiene la misma cantidad.",
+    },
+    {
+      prompt: "Pon el valor inicial que le falta al acumulador.",
+      snippet: "const suma = notas.reduce((acc, n) => acc + n, ___)",
+      answers: ["0"],
+      explanation: "Sin valor inicial, reduce falla cuando el array está vacío.",
+    },
+  ],
   starterCode: `function mediaAprobados(notas: number[]): number {
   // Filtra las aprobadas, calcula la media y redondea a 2 decimales
   return 0

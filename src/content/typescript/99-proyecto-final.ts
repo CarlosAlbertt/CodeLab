@@ -80,6 +80,32 @@ y nacen en estado \`'pendiente'\`.
 
 Y la utilidad genérica \`indexarPor(items, clave)\`, que convierte una lista en un objeto
 indexado por la clave que devuelva la función.`,
+  quiz: [
+    {
+      prompt: "Convierte la hora a minutos desde medianoche.",
+      snippet: "return Number(partes[0]) * ___ + Number(partes[1])",
+      answers: ["60"],
+      explanation: "Cada hora son 60 minutos; así dos horas se pueden comparar como números.",
+    },
+    {
+      prompt: "Completa la condición de solapamiento entre dos citas.",
+      snippet: "const seSolapan = desde < otroFin ___ otroDesde < hasta",
+      answers: ["&&"],
+      explanation: "Se pisan solo si las dos condiciones se cumplen a la vez.",
+    },
+    {
+      prompt: "Escribe el tipo que devuelve la utilidad genérica.",
+      snippet: "function indexarPor<T>(items: T[], clave: (i: T) => string): Record<string, ___>",
+      answers: ["T"],
+      explanation: "Devuelve un objeto con los mismos elementos que entraron, indexados por su clave.",
+    },
+    {
+      prompt: "Descarta las canceladas antes de sumar los minutos.",
+      snippet: "this.citas.___((cita) => cita.estado !== 'cancelada')",
+      answers: ["filter"],
+      explanation: "filter deja fuera las canceladas y reduce suma lo que queda.",
+    },
+  ],
   starterCode: `type EstadoCita = 'pendiente' | 'confirmada' | 'cancelada'
 
 interface Paciente {

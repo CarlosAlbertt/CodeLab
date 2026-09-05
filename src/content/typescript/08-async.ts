@@ -67,6 +67,32 @@ si falla, la vuelve a intentar hasta agotar el número de intentos.
 - Devuelve el resultado en cuanto una llamada tenga éxito.
 - No hace más llamadas de las necesarias: si acierta a la segunda, no hay una tercera.
 - Si se agotan todos los intentos, **relanza el último error** recibido.`,
+  quiz: [
+    {
+      prompt: "Marca la función como asíncrona.",
+      snippet: "___ function cargar(): Promise<string> { return 'datos' }",
+      answers: ["async"],
+      explanation: "async hace que la función devuelva siempre una promesa.",
+    },
+    {
+      prompt: "Espera a que la promesa termine.",
+      snippet: "const datos = ___ cargar()",
+      answers: ["await"],
+      explanation: "Sin await te quedas con la promesa en lugar de con el valor.",
+    },
+    {
+      prompt: "Lanza las dos operaciones a la vez.",
+      snippet: "const [a, b] = await Promise.___([uno(), dos()])",
+      answers: ["all"],
+      explanation: "Promise.all las arranca en paralelo y espera a que terminen todas.",
+    },
+    {
+      prompt: "Escribe el tipo que tiene el error en modo estricto.",
+      snippet: "try {} catch (error) {} // error es de tipo ___",
+      answers: ["unknown"],
+      explanation: "En JavaScript se puede lanzar cualquier cosa, así que hay que comprobarlo antes de usarlo.",
+    },
+  ],
   starterCode: `async function reintentar<T>(operacion: () => Promise<T>, intentos: number): Promise<T> {
   // Intenta la operación hasta "intentos" veces
   return operacion()

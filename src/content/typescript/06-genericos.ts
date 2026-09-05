@@ -67,6 +67,26 @@ Reglas:
 - Los grupos deben aparecer en el **orden en que se descubren** al recorrer el array.
 - Dentro de cada grupo se mantiene el orden original.
 - Con un array vacío devuelve un objeto vacío.`,
+  quiz: [
+    {
+      prompt: "Declara el parámetro de tipo de la función.",
+      snippet: "function primero___(items: T[]): T | undefined {}",
+      answers: ["<T>"],
+      explanation: "El genérico se declara entre < > justo después del nombre de la función.",
+    },
+    {
+      prompt: "Completa el tipo de una función que recibe T y devuelve string.",
+      snippet: "clave: (item: T) ___ string",
+      answers: ["=>"],
+      explanation: "El tipo de una función se escribe con una flecha entre los parámetros y el retorno.",
+    },
+    {
+      prompt: "Escribe el tipo de un objeto con claves de texto y valores numéricos.",
+      snippet: "const edades: ___<string, number> = {}",
+      answers: ["Record"],
+      explanation: "Record<K, V> describe un objeto cuyas claves son de tipo K y sus valores de tipo V.",
+    },
+  ],
   starterCode: `function agrupar<T>(items: T[], clave: (item: T) => string): Record<string, T[]> {
   return {}
 }

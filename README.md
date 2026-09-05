@@ -2,10 +2,11 @@
 
 Aplicación local para aprender a programar. Cada pista se recorre igual:
 
-**teoría → caso práctico → ... → proyecto final**
+**teoría → quiz de repaso → caso práctico → ... → proyecto final**
 
-Cada unidad tiene su apartado de teoría (con ejemplos y errores típicos) y, detrás, un
-caso práctico con editor, tests y solución. Al final de la pista hay un proyecto completo
+Cada unidad tiene su apartado de teoría (con ejemplos y errores típicos), un quiz corto
+para rellenar huecos sobre esos mismos ejemplos y, detrás, un caso práctico con editor,
+tests y solución. Al final de la pista hay un proyecto completo
 que integra todo lo visto. El código se compila y se ejecuta de verdad, y los fallos se
 explican en castellano.
 
@@ -24,7 +25,7 @@ Abre http://localhost:5173.
 | --- | --- |
 | `npm run dev` | Servidor de desarrollo (genera antes el bundle de tipos). |
 | `npm run build` | Typecheck + build de producción en `dist/`. |
-| `npm test` | Verifica que **cada solución incluida pasa sus propios tests**. |
+| `npm test` | Verifica que **cada solución incluida pasa sus propios tests** y que los quiz están bien formados. |
 | `npm run typecheck` | Solo `vue-tsc --noEmit`. |
 
 ## Cómo funciona la pista de TypeScript
@@ -60,7 +61,9 @@ estado privado, arrays para consultarlo y `async` para importar pacientes.
 2. Regístrala en `src/content/typescript/index.ts`.
 3. `npm test` comprueba que la solución pasa sus tests y que la plantilla inicial no.
 
-Campos: `theory` (el apartado previo) y `brief` (el enunciado) admiten Markdown ligero
+Campos: `quiz` son las preguntas de repaso (un fragmento con `___` donde va la respuesta,
+las respuestas válidas y la explicación); `theory` (el apartado previo) y `brief` (el
+enunciado) admiten Markdown ligero
 —encabezados `##`, listas con viñetas y numeradas, `**negrita**`, código con acentos
 graves y bloques con `~~~`—. Con `kind: 'project'` la unidad se lista aparte como cierre
 de la pista.
@@ -76,7 +79,7 @@ src/
     worker/core.ts         Compilar y ejecutar (compartido con los tests)
     worker/harness.ts      expect(), captura de consola, tipos del harness
   content/                 Ejercicios por pista
-  views/LessonView.vue     Apartado de teoría (previo al caso práctico)
+  views/LessonView.vue     Apartado de teoría + quiz de repaso
   views/ExerciseView.vue   Caso práctico: enunciado, editor y resultados
   components/              Editor, Markdown y panel de resultados
 ```

@@ -55,6 +55,32 @@ Luis (45) - inactivo
 ~~~
 
 Fíjate en los espacios: nombre, espacio, edad entre paréntesis, espacio, guion, espacio y el estado.`,
+  quiz: [
+    {
+      prompt: "Anota el tipo de la variable.",
+      snippet: "const edad: ___ = 30",
+      answers: ["number"],
+      explanation: "En TypeScript todos los números son number: no se distingue entero de decimal.",
+    },
+    {
+      prompt: "Anota lo que devuelve la función.",
+      snippet: "function doble(n: number): ___ { return n * 2 }",
+      answers: ["number"],
+      explanation: "El tipo de retorno va después del paréntesis y antes de la llave.",
+    },
+    {
+      prompt: "Completa la plantilla para que salude por nombre.",
+      snippet: "const saludo = `Hola, ___`",
+      answers: ["${nombre}"],
+      explanation: "Dentro de comillas invertidas, ${} inserta el valor de una variable.",
+    },
+    {
+      prompt: "Completa el ternario para elegir entre los dos textos.",
+      snippet: "const etiqueta = activo ___ 'activo' : 'inactivo'",
+      answers: ["?"],
+      explanation: "El ternario se escribe condicion ? valorSiTrue : valorSiFalse.",
+    },
+  ],
   starterCode: `function ficha(nombre: string, edad: number, activo: boolean): string {
   // Devuelve el texto con el formato pedido
   return ''

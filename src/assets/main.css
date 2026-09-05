@@ -5,13 +5,20 @@
   --color-ink-900: #101318;
   --color-ink-800: #171b22;
   --color-ink-700: #1f242d;
-  --color-line: #262c36;
-  --color-muted: #8a92a2;
-  --color-fg: #e6e9ee;
-  --color-accent: #6ea8fe;
-  --color-pass: #3fb984;
-  --color-fail: #ef7a70;
-  --color-warn: #d9a545;
+  --color-line: #2a313c;
+  --color-muted: #949cad;
+  --color-fg: #e9ecf2;
+  --color-accent: #6fa8ff;
+  --color-pass: #4ac98d;
+  --color-fail: #f2837a;
+  --color-warn: #e0ad4d;
+
+  /* Un color por lenguaje, como los puntos de GitHub: identifica la pista de un vistazo. */
+  --color-lang-typescript: #4f8ff0;
+  --color-lang-sql: #a78bfa;
+  --color-lang-java: #e8963c;
+  --color-lang-html: #e5674b;
+  --color-lang-css: #45b8d1;
 
   --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-mono: ui-monospace, 'JetBrains Mono', 'Cascadia Code', Consolas, monospace;
@@ -19,6 +26,7 @@
 
 html {
   color-scheme: dark;
+  font-size: 16px;
 }
 
 body {
@@ -29,25 +37,26 @@ body {
 }
 
 /* Bloques generados por el renderizador de Markdown de teoría y enunciados. */
+.prose-lab {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
 .prose-lab h3 {
-  margin: 1.5rem 0 0.5rem;
-  font-size: 0.8125rem;
+  margin: 2rem 0 0.75rem;
+  font-size: 1.1875rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-muted);
+  color: #fff;
 }
 .prose-lab h3:first-child {
   margin-top: 0;
 }
 .prose-lab p {
-  margin: 0.75rem 0;
-  line-height: 1.65;
+  margin: 0.9rem 0;
 }
 .prose-lab ul,
 .prose-lab ol {
-  margin: 0.75rem 0;
-  padding-left: 1.25rem;
+  margin: 0.9rem 0;
+  padding-left: 1.4rem;
 }
 .prose-lab ul {
   list-style: disc;
@@ -56,8 +65,11 @@ body {
   list-style: decimal;
 }
 .prose-lab li {
-  margin: 0.3rem 0;
-  line-height: 1.6;
+  margin: 0.45rem 0;
+  padding-left: 0.2rem;
+}
+.prose-lab li::marker {
+  color: var(--color-accent);
 }
 .prose-lab strong {
   font-weight: 600;
@@ -65,35 +77,39 @@ body {
 }
 .prose-lab code {
   font-family: var(--font-mono);
-  font-size: 0.85em;
+  font-size: 0.9em;
+  color: #c7d6ec;
   background: var(--color-ink-800);
   border: 1px solid var(--color-line);
-  border-radius: 4px;
-  padding: 0.05rem 0.3rem;
+  border-radius: 5px;
+  padding: 0.1rem 0.35rem;
 }
 .prose-lab pre {
-  margin: 0.9rem 0;
-  padding: 0.85rem 1rem;
+  margin: 1.1rem 0;
+  padding: 1rem 1.15rem;
   overflow-x: auto;
   background: var(--color-ink-900);
+  /* Barra de color: distingue el ejemplo de código del texto que lo rodea. */
   border: 1px solid var(--color-line);
-  border-radius: 6px;
+  border-left: 3px solid var(--color-accent);
+  border-radius: 8px;
 }
 .prose-lab pre code {
   background: none;
   border: 0;
   padding: 0;
-  font-size: 0.8125rem;
-  line-height: 1.6;
+  color: inherit;
+  font-size: 0.9375rem;
+  line-height: 1.7;
 }
 
 .cm-editor {
   height: 100%;
-  font-size: 13.5px;
+  font-size: 15px;
 }
 .cm-editor .cm-scroller {
   font-family: var(--font-mono);
-  line-height: 1.6;
+  line-height: 1.65;
 }
 .cm-editor.cm-focused {
   outline: none;

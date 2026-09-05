@@ -15,6 +15,18 @@ export interface TestCase {
   code: string
 }
 
+/** Pregunta de repaso: se rellena el hueco marcado con ___ en el fragmento. */
+export interface QuizQuestion {
+  /** Qué se pide, en una línea. */
+  prompt: string
+  /** Fragmento de código con ___ en el lugar que hay que completar. */
+  snippet: string
+  /** Respuestas válidas. Se comparan sin distinguir mayúsculas ni espacios. */
+  answers: string[]
+  /** Por qué es esa, para leerlo después de comprobar. */
+  explanation: string
+}
+
 export interface Exercise {
   /** Identificador estable usado en la URL y en el progreso guardado. */
   id: string
@@ -29,6 +41,8 @@ export interface Exercise {
   theory: string
   /** Enunciado con lo que hay que implementar (Markdown ligero). */
   brief: string
+  /** Repaso rápido entre la teoría y el caso práctico. */
+  quiz: QuizQuestion[]
   starterCode: string
   solution: string
   hints: string[]

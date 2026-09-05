@@ -9,5 +9,5 @@ const html = computed(() => renderMarkdown(props.source))
 </script>
 
 <template>
-  <div class="prose-lab text-[0.9375rem] text-fg/85" v-html="html" />
+  <div class="prose-lab text-fg/85" v-html="html" />
 </template>

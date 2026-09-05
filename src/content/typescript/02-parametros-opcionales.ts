@@ -56,6 +56,26 @@ Con \`?\` te toca comprobar si llegó antes de usarlo. Con valor por defecto, no
 Por defecto el descuento es \`0\` y el IVA es \`21\`.
 
 Ejemplo: base \`100\`, descuento \`10\`, IVA \`21\` → \`90 * 1.21 = 108.9\`.`,
+  quiz: [
+    {
+      prompt: "Dale a saludo el valor por defecto 'Hola'.",
+      snippet: "function saludar(nombre: string, saludo ___ 'Hola') {}",
+      answers: ["="],
+      explanation: "El valor por defecto se asigna con = en la propia lista de parámetros.",
+    },
+    {
+      prompt: "Marca apodo como opcional.",
+      snippet: "function ficha(nombre: string, apodo___: string) {}",
+      answers: ["?"],
+      explanation: "El ? permite que el parámetro no llegue: su tipo pasa a ser string | undefined.",
+    },
+    {
+      prompt: "Completa el redondeo a dos decimales.",
+      snippet: "const total = Math.round(valor * ___) / 100",
+      answers: ["100"],
+      explanation: "Multiplicar por 100, redondear y volver a dividir deja dos decimales.",
+    },
+  ],
   starterCode: `function precioFinal(base: number, descuento = 0, iva = 21): number {
   // Aplica descuento, luego IVA, y redondea a 2 decimales
   return 0
