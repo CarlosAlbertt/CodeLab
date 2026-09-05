@@ -39,7 +39,28 @@ try {
 ~~~
 
 En modo estricto el \`error\` del catch es \`unknown\`. Es intencionado: en JavaScript se
-puede lanzar cualquier cosa, no solo un \`Error\`.`,
+puede lanzar cualquier cosa, no solo un \`Error\`.
+
+## Lo que devuelve una función async
+
+Siempre una promesa, aunque dentro escribas \`return 5\`: el tipo es \`Promise<number>\`. Y si lanzas un error, la promesa se rechaza en lugar de propagarse directamente hacia arriba.
+
+## Secuencial o en paralelo
+
+~~~ts
+const a = await uno()   // espera a que termine
+const b = await dos()   // y solo entonces empieza la segunda
+
+const [c, d] = await Promise.all([uno(), dos()])  // las dos a la vez
+~~~
+
+Si las operaciones no dependen entre sí, \`Promise.all\` ahorra tiempo real.
+
+## Errores típicos
+
+- Olvidar el \`await\`: te quedas con la promesa en vez de con el valor.
+- Dejar el \`await\` fuera del \`try\` cuando lo que quieres es capturar el fallo.
+- Tratar el \`error\` del \`catch\` como si fuese un \`Error\` sin comprobarlo: en modo estricto es \`unknown\`.`,
   brief: `Implementa \`reintentar\`, una función genérica que ejecuta una operación asíncrona y,
 si falla, la vuelve a intentar hasta agotar el número de intentos.
 

@@ -47,7 +47,29 @@ class Contador {
 }
 
 new Contador().actual   // sin ()
-~~~`,
+~~~
+
+## Propiedades desde el constructor
+
+TypeScript permite declarar y asignar una propiedad en el propio constructor:
+
+~~~ts
+class Cuenta {
+  constructor(private saldo: number) {}
+
+  disponible(): number {
+    return this.saldo
+  }
+}
+~~~
+
+Equivale a declarar \`private saldo\` y asignarla dentro, pero en una línea.
+
+## Errores típicos
+
+- Olvidar \`this.\` al usar una propiedad dentro de un método: sin él, TypeScript busca una variable suelta.
+- Llamar a un getter con paréntesis: es \`carrito.cantidad\`, no \`carrito.cantidad()\`.
+- Dar por hecho que \`private\` protege en tiempo de ejecución: es una comprobación del compilador, no un candado.`,
   brief: `Implementa la clase \`Carrito\` de una tienda:
 
 - Una propiedad **privada** \`items\` con la lista de productos (\`nombre\` y \`precio\`).

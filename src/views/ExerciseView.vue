@@ -20,7 +20,7 @@ const siguiente = computed(() =>
 const { isCompleted, markCompleted, savedCode, saveCode, clearCode } = useProgress()
 
 type Tab = 'teoria' | 'enunciado' | 'tests' | 'solucion'
-const tab = ref<Tab>('teoria')
+const tab = ref<Tab>('enunciado')
 const code = ref('')
 const result = ref<RunResult | null>(null)
 const running = ref(false)
@@ -36,7 +36,8 @@ function loadExercise() {
   running.value = false
   visibleHints.value = 0
   solutionRevealed.value = false
-  tab.value = 'teoria'
+  // La teoria ya se ha leido en su propio apartado: aqui se abre el enunciado.
+  tab.value = 'enunciado'
   code.value = current ? (savedCode(current.id) ?? current.starterCode) : ''
 
   runner?.dispose()
@@ -84,8 +85,8 @@ function copySolutionToEditor() {
 }
 
 const TABS: { id: Tab; label: string }[] = [
-  { id: 'teoria', label: 'Teoría' },
   { id: 'enunciado', label: 'Enunciado' },
+  { id: 'teoria', label: 'Teoría' },
   { id: 'tests', label: 'Tests' },
 ]
 
@@ -107,7 +108,17 @@ const DIFFICULTY_LABEL: Record<number, string> = { 1: 'introducción', 2: 'prác
           <span v-if="isCompleted(exercise.id)" class="ml-2 align-middle text-sm text-pass">✓</span>
         </h1>
       </div>
-      <span class="text-xs text-muted">{{ DIFFICULTY_LABEL[exercise.difficulty] }}</span>
+      <div class="flex items-baseline gap-4">
+        <RouterLink
+          :to="{ name: 'lesson', params: { trackId: track.id, exerciseId: exercise.id } }"
+          class="text-xs text-accent hover:underline"
+        >
+          Repasar la teoría
+        </RouterLink>
+        <span class="text-xs text-muted">
+          {{ exercise.kind === 'project' ? 'proyecto final' : DIFFICULTY_LABEL[exercise.difficulty] }}
+        </span>
+      </div>
     </div>
 
     <div class="grid gap-px overflow-hidden rounded-lg border border-line bg-line lg:h-[calc(100vh-9.5rem)] lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)]">

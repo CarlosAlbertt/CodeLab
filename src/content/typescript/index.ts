@@ -7,8 +7,9 @@ import { exercise as uniones } from './05-uniones'
 import { exercise as genericos } from './06-genericos'
 import { exercise as clases } from './07-clases'
 import { exercise as asincronia } from './08-async'
+import { exercise as proyectoFinal } from './99-proyecto-final'
 
-/** Orden de la pista: cada ejercicio da por sabido lo anterior. */
+/** Orden de la pista: cada unidad da por sabido lo anterior, y el proyecto final las junta todas. */
 export const typescriptExercises: Exercise[] = [
   tiposYFunciones,
   parametrosOpcionales,
@@ -18,4 +19,5 @@ export const typescriptExercises: Exercise[] = [
   genericos,
   clases,
   asincronia,
+  proyectoFinal,
 ]

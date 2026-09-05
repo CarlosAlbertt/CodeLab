@@ -38,7 +38,23 @@ function aplicar<T>(valor: T, transformar: (entrada: T) => string): string {
 
 ~~~ts
 const edades: Record<string, number> = { ana: 30, luis: 45 }
-~~~`,
+~~~
+
+## Restringir un genérico
+
+\`extends\` limita qué tipos se aceptan, y a cambio te deja usar lo que tienen en común:
+
+~~~ts
+function nombreDe<T extends { nombre: string }>(item: T): string {
+  return item.nombre
+}
+~~~
+
+## Errores típicos
+
+- Recurrir a \`any\` para que compile: pierdes toda la ayuda del compilador. Un genérico da la misma flexibilidad sin perderla.
+- Declarar \`<T>\` y no usarlo en ningún parámetro: entonces no hay de dónde deducirlo.
+- Olvidar inicializar el acumulador antes del bucle, o inicializarlo dentro (se reinicia en cada vuelta).`,
   brief: `Implementa \`agrupar\`, una función genérica que reparte los elementos de un array en
 grupos según la clave que devuelva la función que recibe.
 

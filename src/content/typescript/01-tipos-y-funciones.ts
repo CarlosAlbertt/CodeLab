@@ -39,7 +39,13 @@ const saludo = \`Hola, \${nombre}. Tienes \${edad} años.\`
 
 ~~~ts
 const etiqueta = activo ? 'activo' : 'inactivo'
-~~~`,
+~~~
+
+## Errores típicos
+
+- Poner el tipo antes del nombre, como en Java: aquí es \`nombre: string\`, no \`string nombre\`.
+- Olvidar el tipo de retorno. No es obligatorio, pero anotarlo hace que el compilador te avise si te dejas un \`return\` por el camino.
+- Usar comillas normales para las plantillas: la interpolación \${...} solo funciona con comillas invertidas.`,
   brief: `Implementa la función \`ficha\` que recibe un nombre, una edad y si la persona
 está activa, y devuelve una línea de texto con este formato exacto:
 

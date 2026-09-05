@@ -20,6 +20,8 @@ export interface Exercise {
   id: string
   language: LanguageId
   title: string
+  /** `project` = proyecto final que integra todo lo visto en la pista. */
+  kind?: 'exercise' | 'project'
   difficulty: Difficulty
   /** Conceptos que se practican, para las etiquetas de la ficha. */
   concepts: string[]

@@ -44,10 +44,16 @@ body {
   margin: 0.75rem 0;
   line-height: 1.65;
 }
-.prose-lab ul {
+.prose-lab ul,
+.prose-lab ol {
   margin: 0.75rem 0;
-  padding-left: 1.1rem;
+  padding-left: 1.25rem;
+}
+.prose-lab ul {
   list-style: disc;
+}
+.prose-lab ol {
+  list-style: decimal;
 }
 .prose-lab li {
   margin: 0.3rem 0;

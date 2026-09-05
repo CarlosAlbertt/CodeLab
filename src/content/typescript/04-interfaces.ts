@@ -39,7 +39,21 @@ interface Usuario {
 ~~~ts
 const usuarios: Usuario[] = [ana]
 const admins = usuarios.filter((u) => u.admin).length
-~~~`,
+~~~
+
+## interface o type
+
+Para describir objetos sirven las dos. \`interface\` es lo habitual al modelar entidades del dominio (un paciente, un pedido) y se puede ampliar más adelante; \`type\` sirve además para uniones y alias. Elige una y sé consistente.
+
+## Las interfaces no existen en tiempo de ejecución
+
+Una interfaz solo vive mientras el compilador comprueba tu código: no genera nada. Si los datos vienen de fuera (una API, un formulario), el compilador se fía de lo que le digas, así que ahí sí hay que comprobarlos a mano.
+
+## Errores típicos
+
+- Escribir una propiedad con un nombre distinto al que espera quien usa el objeto.
+- Separar las propiedades con comas: dentro de una interfaz van con salto de línea o punto y coma.
+- Marcar todo como opcional con \`?\` para que deje de quejarse: entonces te toca comprobarlo todo después.`,
   brief: `Una clínica quiere un resumen de su agenda.
 
 1. Declara la interfaz \`Cita\` con estas propiedades: \`paciente\` (texto),

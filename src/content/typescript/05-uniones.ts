@@ -43,7 +43,17 @@ function render(p: Peticion): string {
 }
 ~~~
 
-Fíjate en \`'cargando'\` como tipo: no es "un string cualquiera", es **ese** texto concreto.`,
+Fíjate en \`'cargando'\` como tipo: no es "un string cualquiera", es **ese** texto concreto.
+
+## Por qué se llama estrechar
+
+Antes del \`if\`, el tipo es la unión entera y solo puedes usar lo que comparten todas las opciones. Dentro del \`if\`, TypeScript descarta las que ya no son posibles y el tipo se estrecha. Es el compilador siguiendo tu mismo razonamiento.
+
+## Errores típicos
+
+- Acceder a una propiedad que solo existe en una de las opciones sin comprobar antes cuál es.
+- Declarar la propiedad discriminante como \`string\` en vez del literal \`'ok'\`: si admite cualquier texto, ya no distingue nada.
+- Poner un \`else\` innecesario: si el \`if\` termina en \`return\`, lo que va después ya es la otra opción.`,
   brief: `Modela el resultado de una operación que puede salir bien o mal.
 
 1. Declara el tipo \`Resultado\` como la unión de dos formas:

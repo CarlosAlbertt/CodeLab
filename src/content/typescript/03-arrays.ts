@@ -32,7 +32,26 @@ evita errores cuando el array está vacío.
 ## Cuidado con la división por cero
 
 Si filtras y no queda ningún elemento, dividir entre \`length\` da \`NaN\`.
-Comprueba la longitud antes.`,
+Comprueba la longitud antes.
+
+## Encadenar métodos
+
+\`filter\` y \`map\` devuelven un array nuevo, así que se encadenan de forma natural:
+
+~~~ts
+const total = productos
+  .filter((p) => p.activo)
+  .map((p) => p.precio)
+  .reduce((suma, precio) => suma + precio, 0)
+~~~
+
+Ninguno de los tres modifica el array original: eso es justo lo que los hace seguros.
+
+## Errores típicos
+
+- \`reduce\` sin valor inicial: falla cuando el array está vacío.
+- Confundir \`filter\` (los mismos elementos, menos cantidad) con \`map\` (la misma cantidad, elementos transformados).
+- Dividir entre \`length\` sin comprobar que no sea cero: el resultado es \`NaN\`.`,
   brief: `Implementa \`mediaAprobados\`, que recibe un array de notas y devuelve la **media de las
 notas iguales o mayores que 5**, redondeada a dos decimales.
 

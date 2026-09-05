@@ -1,7 +1,12 @@
 # CodeLab
 
-Aplicación local para practicar programación con ejercicios cortos: enunciado, teoría,
-editor, tests y solución. El código se compila y se ejecuta de verdad, y los fallos se
+Aplicación local para aprender a programar. Cada pista se recorre igual:
+
+**teoría → caso práctico → ... → proyecto final**
+
+Cada unidad tiene su apartado de teoría (con ejemplos y errores típicos) y, detrás, un
+caso práctico con editor, tests y solución. Al final de la pista hay un proyecto completo
+que integra todo lo visto. El código se compila y se ejecuta de verdad, y los fallos se
 explican en castellano.
 
 Pistas previstas: **TypeScript** (lista), SQL, Java, HTML y CSS.
@@ -41,14 +46,24 @@ en lugar de colgar la página.
 El bundle de tipos (`public/ts-libs/lib.bundle.d.ts`) lo genera `scripts/build-ts-lib.mjs`
 aplanando la cadena de `lib.es2020.d.ts`. No se versiona: se regenera en cada `dev`/`build`.
 
-## Añadir un ejercicio
+## Contenido de la pista de TypeScript
 
-1. Crea `src/content/typescript/09-lo-que-sea.ts` copiando la forma de cualquier otro.
-2. Regístralo en `src/content/typescript/index.ts`.
+Ocho unidades — tipos y funciones, parámetros por defecto, `filter`/`map`/`reduce`,
+interfaces, uniones y narrowing, genéricos, clases y `async`/`await` — y un proyecto
+final, **Agenda de una clínica**, que junta las seis piezas: interfaces para los datos,
+unión discriminada para el resultado de reservar, una utilidad genérica, una clase con
+estado privado, arrays para consultarlo y `async` para importar pacientes.
+
+## Añadir una unidad
+
+1. Crea `src/content/typescript/09-lo-que-sea.ts` copiando la forma de cualquier otra.
+2. Regístrala en `src/content/typescript/index.ts`.
 3. `npm test` comprueba que la solución pasa sus tests y que la plantilla inicial no.
 
-Campos de un ejercicio: `theory` y `brief` admiten Markdown ligero (encabezados `##`,
-listas, `**negrita**`, código con acentos graves y bloques con `~~~`).
+Campos: `theory` (el apartado previo) y `brief` (el enunciado) admiten Markdown ligero
+—encabezados `##`, listas con viñetas y numeradas, `**negrita**`, código con acentos
+graves y bloques con `~~~`—. Con `kind: 'project'` la unidad se lista aparte como cierre
+de la pista.
 
 ## Estructura
 
@@ -61,7 +76,9 @@ src/
     worker/core.ts         Compilar y ejecutar (compartido con los tests)
     worker/harness.ts      expect(), captura de consola, tipos del harness
   content/                 Ejercicios por pista
-  views/, components/      Interfaz (Vue 3 + Tailwind 4)
+  views/LessonView.vue     Apartado de teoría (previo al caso práctico)
+  views/ExerciseView.vue   Caso práctico: enunciado, editor y resultados
+  components/              Editor, Markdown y panel de resultados
 ```
 
 Para añadir un lenguaje basta con escribir sus ejercicios y registrar un `Runner` en

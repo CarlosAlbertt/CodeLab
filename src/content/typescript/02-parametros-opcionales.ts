@@ -29,7 +29,24 @@ El truco habitual para dejar dos decimales es:
 
 ~~~ts
 const redondeado = Math.round(valor * 100) / 100
-~~~`,
+~~~
+
+## Opcional o con valor por defecto
+
+No son lo mismo:
+
+~~~ts
+function a(nombre: string, apodo?: string) {}       // apodo puede ser undefined
+function b(nombre: string, apodo = 'sin apodo') {}  // apodo nunca es undefined
+~~~
+
+Con \`?\` te toca comprobar si llegó antes de usarlo. Con valor por defecto, no.
+
+## Errores típicos
+
+- Colocar un parámetro con valor por defecto antes de uno obligatorio.
+- Sumar dos porcentajes: un 10% de descuento y un 21% de IVA no equivalen a un 11%. Se aplican uno detrás de otro.
+- Redondear en cada paso intermedio: el error se acumula. Redondea solo al final.`,
   brief: `Implementa \`precioFinal\`, que calcula el importe a pagar de un producto:
 
 1. Aplica el **descuento** (un porcentaje sobre la base).

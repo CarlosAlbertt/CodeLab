@@ -12,6 +12,12 @@ export const router = createRouter({
       props: true,
     },
     {
+      path: '/pista/:trackId/:exerciseId/teoria',
+      name: 'lesson',
+      component: () => import('@/views/LessonView.vue'),
+      props: true,
+    },
+    {
       path: '/pista/:trackId/:exerciseId',
       name: 'exercise',
       component: () => import('@/views/ExerciseView.vue'),

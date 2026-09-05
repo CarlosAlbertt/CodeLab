@@ -1,9 +1,9 @@
 /**
  * Minimal Markdown renderer for exercise theory and briefs.
  *
- * Supports headings, paragraphs, bullet lists, fenced code blocks, bold and
- * inline code. Everything is HTML-escaped before any transformation, so
- * exercise content can never inject markup into the page.
+ * Supports headings, paragraphs, bullet and numbered lists, fenced code
+ * blocks, bold and inline code. Everything is HTML-escaped before any
+ * transformation, so exercise content can never inject markup into the page.
  */
 const ESCAPES: Record<string, string> = {
   '&': '&amp;',
@@ -30,6 +30,7 @@ export function renderMarkdown(source: string): string {
 
   let paragraph: string[] = []
   let list: string[] = []
+  let listTag: 'ul' | 'ol' = 'ul'
 
   const flushParagraph = () => {
     if (paragraph.length === 0) return
@@ -39,8 +40,17 @@ export function renderMarkdown(source: string): string {
 
   const flushList = () => {
     if (list.length === 0) return
-    html.push(`<ul>${list.map((item) => `<li>${renderInline(item)}</li>`).join('')}</ul>`)
+    const items = list.map((item) => `<li>${renderInline(item)}</li>`).join('')
+    html.push(`<${listTag}>${items}</${listTag}>`)
     list = []
+  }
+
+  /** Un cambio de vinetas a numeros cierra la lista anterior y abre otra. */
+  const pushListItem = (tag: 'ul' | 'ol', text: string) => {
+    flushParagraph()
+    if (list.length > 0 && listTag !== tag) flushList()
+    listTag = tag
+    list.push(text)
   }
 
   const flushAll = () => {
@@ -72,8 +82,12 @@ export function renderMarkdown(source: string): string {
     }
 
     if (/^[-*]\s+/.test(line)) {
-      flushParagraph()
-      list.push(line.replace(/^[-*]\s+/, ''))
+      pushListItem('ul', line.replace(/^[-*]\s+/, ''))
+      continue
+    }
+
+    if (/^\d+\.\s+/.test(line)) {
+      pushListItem('ol', line.replace(/^\d+\.\s+/, ''))
       continue
     }
 

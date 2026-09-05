@@ -13,6 +13,12 @@ describe('renderMarkdown', () => {
     expect(html).toContain('<strong>fuerte</strong>')
   })
 
+  it('distingue listas numeradas de listas con viñetas', () => {
+    const html = renderMarkdown('- uno\n\n1. primero\n2. segundo')
+    expect(html).toContain('<ul><li>uno</li></ul>')
+    expect(html).toContain('<ol><li>primero</li><li>segundo</li></ol>')
+  })
+
   it('respeta los bloques de código sin interpretar su contenido', () => {
     const html = renderMarkdown('~~~ts\nconst a: number = 1\n~~~')
     expect(html).toContain('<pre><code class="language-ts">const a: number = 1</code></pre>')

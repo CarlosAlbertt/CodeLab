@@ -12,8 +12,8 @@ export const tracks: Track[] = [
     name: 'TypeScript',
     tagline: 'JavaScript con tipos comprobados',
     description:
-      'Tipos, funciones, arrays, interfaces, uniones, genéricos, clases y asincronía. ' +
-      'Cada ejercicio se compila con el compilador real de TypeScript en modo estricto.',
+      'Ocho unidades con su teoría y su caso práctico, y un proyecto final que las integra. ' +
+      'Todo se compila con el compilador real de TypeScript en modo estricto.',
     status: 'ready',
     exercises: typescriptExercises,
   },
