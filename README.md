@@ -25,6 +25,20 @@ npm run dev
 
 Abre http://localhost:5173.
 
+### En Vercel
+
+La aplicación es estática, así que se despliega tal cual: importa el repositorio en Vercel
+y detecta Vite solo. `vercel.json` ya trae lo único que no es automático:
+
+- La **regla de rutas** (`rewrites`), para que recargar en `/pista/docker` no dé 404: el
+  router vive en el navegador, así que cualquier ruta desconocida tiene que devolver
+  `index.html`.
+- Cabeceras de caché para `/assets` (los ficheros llevan hash en el nombre) y para el
+  bundle de tipos.
+
+El bundle de tipos no está versionado, pero `npm run build` lo genera antes de compilar,
+así que no hay nada que preparar a mano.
+
 ### Con Docker
 
 Sin instalar Node en el equipo:
