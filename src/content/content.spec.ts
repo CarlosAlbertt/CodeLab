@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 import { compileAndRun } from '@/engine/worker/core'
 import { DockerfileRunner } from '@/engine/runners/dockerfile'
+import { CssRunner } from '@/engine/runners/css'
 import { runSql, setWasmLocation } from '@/engine/sql/core'
 import { correctAnswerText, initialAnswer, isQuestionCorrect } from '@/utils/quiz'
 import { tracks } from '@/content'
@@ -20,6 +21,7 @@ const libText = readFileSync(
 )
 
 const dockerRunner = new DockerfileRunner()
+const cssRunner = new CssRunner()
 
 // En Node no hay bundler que resuelva el .wasm: se apunta directamente al fichero.
 setWasmLocation(join(process.cwd(), 'node_modules', 'sql.js', 'dist', 'sql-wasm.wasm'))
@@ -27,6 +29,7 @@ setWasmLocation(join(process.cwd(), 'node_modules', 'sql.js', 'dist', 'sql-wasm.
 /** Ejecuta el ejercicio con el motor de su pista y normaliza el resultado. */
 async function run(exercise: Exercise, code: string): Promise<RunResult> {
   if (exercise.language === 'docker') return dockerRunner.run(exercise, code)
+  if (exercise.language === 'css') return cssRunner.run(exercise, code)
 
   if (exercise.language === 'sql') {
     const outcome = await runSql(exercise.setup ?? '', code, exercise.verify)
@@ -49,7 +52,8 @@ async function run(exercise: Exercise, code: string): Promise<RunResult> {
   return compileAndRun(libText, code, exercise.tests)
 }
 
-const ready = tracks.filter((track) => track.status === 'ready')
+// HTML necesita un DOM de verdad: se comprueba en html.spec.ts, bajo jsdom.
+const ready = tracks.filter((track) => track.status === 'ready' && track.id !== 'html')
 
 describe.each(ready)('pista de $name', (track) => {
   it('tiene ejercicios', () => {

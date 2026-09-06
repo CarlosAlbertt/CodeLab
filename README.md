@@ -14,7 +14,7 @@ fichas** a los huecos del código y **ordenar líneas** sueltas. Al final de cad
 un proyecto completo que integra todo lo visto. El código se comprueba de verdad, y los
 fallos se explican en castellano.
 
-Pistas listas: **TypeScript**, **SQL** y **Docker**. Previstas: Java, HTML y CSS.
+Pistas listas: **TypeScript**, **SQL**, **HTML**, **CSS** y **Docker**. Pendiente: Java.
 
 ## Arrancar
 
@@ -73,6 +73,10 @@ cambia.
 - **SQL** — se ejecuta contra una base de datos real: SQLite compilado a WebAssembly
   (`sql.js`), en un worker. Cada ejercicio parte del mismo esquema de clínica, y las
   comprobaciones miran las filas devueltas, no el texto de la consulta.
+- **HTML** — se analiza el `Document` que construye el navegador, así que la sangría, las
+  comillas o el orden de los atributos dan igual: lo que se comprueba es la estructura.
+- **CSS** — se leen las reglas declaradas con un parser propio. El resultado visual se ve
+  en la **vista previa en vivo** que hay junto al editor, en un iframe aislado.
 - **Docker** — no hay demonio en el navegador, así que los ejercicios se corrigen
   **leyendo el fichero**: un parser de Dockerfile saca las instrucciones con su número de
   línea, y cada test comprueba una cosa concreta (que `npm ci` vaya antes de `COPY . .`,
@@ -161,6 +165,16 @@ de actividad por ciudad que necesita casi todo a la vez.
 Todas parten de la misma base de datos (`src/content/sql/schema.ts`): pacientes y citas de
 una clínica, con los casos límite metidos a propósito — un paciente sin ninguna cita, dos
 ciudades empatadas, citas canceladas que no deben contar.
+
+## Contenido de las pistas de HTML y CSS
+
+**HTML**: estructura de una página, texto y enlaces, semántica, imágenes y formularios, más
+un proyecto final con una página completa. La accesibilidad va metida en cada unidad —
+`lang`, jerarquía de encabezados, `alt`, `label` asociado — y varios tests la comprueban.
+
+**CSS**: selectores y cascada, modelo de caja, flexbox, grid y diseño adaptable, y un
+proyecto final que maqueta la página de la pista de HTML. El marcado de cada ejercicio va
+en su campo `setup`, y el alumno solo escribe los estilos.
 
 ## Contenido de la pista de Docker
 

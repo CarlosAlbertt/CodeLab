@@ -9,6 +9,7 @@ import type { RunResult, Runner } from '@/types/exercise'
 import CodeEditor from '@/components/CodeEditor.vue'
 import MarkdownBlock from '@/components/MarkdownBlock.vue'
 import ResultsPanel from '@/components/ResultsPanel.vue'
+import LivePreview from '@/components/LivePreview.vue'
 import LevelBadge from '@/components/LevelBadge.vue'
 
 const props = defineProps<{ trackId: string; exerciseId: string }>()
@@ -24,6 +25,19 @@ const { isCompleted, markCompleted, savedCode, saveCode, clearCode } = useProgre
 const fileName = computed(() =>
   exercise.value ? (exercise.value.fileName ?? DEFAULT_FILE_NAME[exercise.value.language]) : '',
 )
+
+/** HTML y CSS se ven mientras se escriben: el resto de pistas no tienen nada que pintar. */
+const hasPreview = computed(
+  () => exercise.value?.language === 'html' || exercise.value?.language === 'css',
+)
+const previewHtml = computed(() => {
+  const current = exercise.value
+  if (!current) return ''
+  if (current.language === 'html') return code.value
+  // En CSS el marcado lo pone el ejercicio y el alumno solo escribe los estilos.
+  return `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8" /><style>${code.value}</style></head><body>${current.setup ?? ''}</body></html>`
+})
+const bottomTab = ref<'resultados' | 'vista'>('resultados')
 
 type Tab = 'teoria' | 'enunciado' | 'tests' | 'solucion'
 const tab = ref<Tab>('enunciado')
@@ -44,6 +58,7 @@ function loadExercise() {
   solutionRevealed.value = false
   // La teoria ya se ha leido en su propio apartado: aqui se abre el enunciado.
   tab.value = 'enunciado'
+  bottomTab.value = 'resultados'
   code.value = current ? (savedCode(current.id) ?? current.starterCode) : ''
 
   runner?.dispose()
@@ -251,7 +266,27 @@ const TABS: { id: Tab; label: string }[] = [
 
         <div class="flex min-h-0 flex-col bg-ink-950">
           <div class="flex shrink-0 items-center justify-between border-b border-line px-5 py-2.5">
-            <span class="font-mono text-sm text-muted">resultados</span>
+            <span v-if="!hasPreview" class="font-mono text-sm text-muted">resultados</span>
+            <!-- En HTML y CSS conviene alternar entre lo que falla y cómo se ve. -->
+            <span v-else class="flex items-center gap-1">
+              <button
+                v-for="item in [
+                  { id: 'resultados' as const, label: 'Resultados' },
+                  { id: 'vista' as const, label: 'Vista previa' },
+                ]"
+                :key="item.id"
+                type="button"
+                class="rounded-md px-3 py-1 text-sm transition-colors"
+                :class="
+                  bottomTab === item.id
+                    ? 'bg-accent/15 text-accent'
+                    : 'text-muted hover:text-fg'
+                "
+                @click="bottomTab = item.id"
+              >
+                {{ item.label }}
+              </button>
+            </span>
             <RouterLink
               v-if="result?.ok && siguiente"
               :to="{ name: 'exercise', params: { trackId: track.id, exerciseId: siguiente.id } }"
@@ -261,7 +296,9 @@ const TABS: { id: Tab; label: string }[] = [
             </RouterLink>
           </div>
           <div class="min-h-0 flex-1">
+            <LivePreview v-if="hasPreview && bottomTab === 'vista'" :html="previewHtml" />
             <ResultsPanel
+              v-else
               :result="result"
               :running="running"
               :error-label="ERROR_LABEL[exercise.language]"

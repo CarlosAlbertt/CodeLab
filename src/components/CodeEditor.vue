@@ -6,6 +6,8 @@ import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirro
 import { bracketMatching, indentOnInput } from '@codemirror/language'
 import { autocompletion, closeBrackets, closeBracketsKeymap } from '@codemirror/autocomplete'
 import { javascript } from '@codemirror/lang-javascript'
+import { css } from '@codemirror/lang-css'
+import { html } from '@codemirror/lang-html'
 import { StreamLanguage } from '@codemirror/language'
 import { dockerFile } from '@codemirror/legacy-modes/mode/dockerfile'
 import { yaml } from '@codemirror/legacy-modes/mode/yaml'
@@ -16,7 +18,7 @@ const props = withDefaults(
   defineProps<{
     modelValue: string
     readonly?: boolean
-    language?: 'typescript' | 'dockerfile' | 'yaml' | 'sql'
+    language?: 'typescript' | 'dockerfile' | 'yaml' | 'sql' | 'html' | 'css'
   }>(),
   { readonly: false, language: 'typescript' },
 )
@@ -25,6 +27,8 @@ function languageExtension() {
   if (props.language === 'dockerfile') return StreamLanguage.define(dockerFile)
   if (props.language === 'yaml') return StreamLanguage.define(yaml)
   if (props.language === 'sql') return StreamLanguage.define(sqlite)
+  if (props.language === 'html') return html()
+  if (props.language === 'css') return css()
   return javascript({ typescript: true })
 }
 

@@ -1,5 +1,7 @@
 import type { Exercise, LanguageId, Track } from '@/types/exercise'
 import { dockerExercises } from './docker'
+import { cssExercises } from './css'
+import { htmlExercises } from './html'
 import { sqlExercises } from './sql'
 import { typescriptExercises } from './typescript'
 
@@ -51,17 +53,21 @@ export const tracks: Track[] = [
     id: 'html',
     name: 'HTML',
     tagline: 'Estructura y semántica',
-    description: 'Etiquetas semánticas, formularios y accesibilidad, comprobados sobre el DOM que generas.',
-    status: 'soon',
-    exercises: [],
+    description:
+      'Estructura, semántica, imágenes y formularios, con la accesibilidad metida en cada ' +
+      'unidad. Se comprueba sobre el DOM que construye el navegador, con vista previa en vivo.',
+    status: 'ready',
+    exercises: htmlExercises,
   },
   {
     id: 'css',
     name: 'CSS',
     tagline: 'Maquetación y diseño',
-    description: 'Selectores, box model, flexbox, grid y responsive, con vista previa en vivo.',
-    status: 'soon',
-    exercises: [],
+    description:
+      'Selectores y cascada, modelo de caja, flexbox, grid y diseño adaptable. Se comprueban ' +
+      'las reglas que escribes, y la vista previa enseña el resultado mientras lo haces.',
+    status: 'ready',
+    exercises: cssExercises,
   },
 ]
 

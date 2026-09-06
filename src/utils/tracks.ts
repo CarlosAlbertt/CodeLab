@@ -41,10 +41,14 @@ export const DEFAULT_FILE_NAME: Record<LanguageId, string> = {
 }
 
 /** Resaltado del editor, deducido del nombre del fichero. */
-export function editorLanguage(fileName: string): 'typescript' | 'dockerfile' | 'yaml' | 'sql' {
+export function editorLanguage(
+  fileName: string,
+): 'typescript' | 'dockerfile' | 'yaml' | 'sql' | 'html' | 'css' {
   if (fileName === 'Dockerfile' || fileName.endsWith('.dockerfile')) return 'dockerfile'
   if (fileName.endsWith('.yml') || fileName.endsWith('.yaml')) return 'yaml'
   if (fileName.endsWith('.sql')) return 'sql'
+  if (fileName.endsWith('.html')) return 'html'
+  if (fileName.endsWith('.css')) return 'css'
   return 'typescript'
 }
 
