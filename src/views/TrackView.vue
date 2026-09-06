@@ -13,7 +13,8 @@ const track = computed(() => findTrack(props.trackId))
 const units = computed(() => track.value?.exercises.filter((item) => item.kind !== 'project') ?? [])
 const project = computed(() => track.value?.exercises.find((item) => item.kind === 'project'))
 
-const { isCompleted, trackProgress } = useProgress()
+const { isCompleted, isRead, nextUp, trackProgress } = useProgress()
+const pending = computed(() => (track.value ? nextUp(track.value.id) : undefined))
 const progress = computed(() => (track.value ? trackProgress(track.value.id) : { done: 0, total: 0 }))
 </script>
 
@@ -40,6 +41,23 @@ const progress = computed(() => (track.value ? trackProgress(track.value.id) : {
     </div>
 
     <p class="mt-5 max-w-2xl text-base leading-relaxed text-muted">{{ track.description }}</p>
+
+    <!-- Atajo al siguiente paso: evita tener que buscarlo en la lista. -->
+    <RouterLink
+      v-if="pending"
+      :to="{
+        name: isRead(pending.id) ? 'exercise' : 'lesson',
+        params: { trackId: track.id, exerciseId: pending.id },
+      }"
+      class="mt-6 inline-flex items-center gap-3 rounded-lg border border-accent/40 bg-accent/15 px-5 py-3 text-base text-accent transition-colors hover:bg-accent/25"
+    >
+      <span class="font-medium">
+        {{ progress.done === 0 ? 'Empezar por' : 'Continuar por' }}
+      </span>
+      <span class="text-fg/90">{{ pending.title }}</span>
+      <span aria-hidden="true">→</span>
+    </RouterLink>
+    <p v-else class="mt-6 text-base text-pass">Pista completa. Nada mal.</p>
 
     <h2 class="mt-12 text-sm font-medium uppercase tracking-wider text-muted">Unidades</h2>
     <ol class="mt-4 divide-y divide-line border-y border-line">
@@ -69,9 +87,15 @@ const progress = computed(() => (track.value ? trackProgress(track.value.id) : {
         <LevelBadge :difficulty="exercise.difficulty" />
 
         <span class="flex shrink-0 items-center gap-3 text-sm">
+          <!-- La teoría ya leída se apaga: así destaca lo que queda por hacer. -->
           <RouterLink
             :to="{ name: 'lesson', params: { trackId: track.id, exerciseId: exercise.id } }"
-            class="rounded-md border border-accent/40 bg-accent/10 px-3 py-1.5 text-accent transition-colors hover:bg-accent/20"
+            class="rounded-md border px-3 py-1.5 transition-colors"
+            :class="
+              isRead(exercise.id)
+                ? 'border-line text-muted hover:border-fg/30 hover:text-fg'
+                : 'border-accent/40 bg-accent/10 text-accent hover:bg-accent/20'
+            "
           >
             Teoría
           </RouterLink>

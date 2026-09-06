@@ -1,4 +1,5 @@
 import type { Exercise, LanguageId, Track } from '@/types/exercise'
+import { dockerExercises } from './docker'
 import { typescriptExercises } from './typescript'
 
 /**
@@ -16,6 +17,16 @@ export const tracks: Track[] = [
       'práctico, más un proyecto final. Todo se compila con el compilador real de TypeScript.',
     status: 'ready',
     exercises: typescriptExercises,
+  },
+  {
+    id: 'docker',
+    name: 'Docker',
+    tagline: 'Empaquetar y ejecutar aplicaciones',
+    description:
+      'Imágenes, capas y caché, multi-stage y compose. Los ejercicios se corrigen leyendo el ' +
+      'Dockerfile que escribes, y el proyecto final es el de esta misma aplicación.',
+    status: 'ready',
+    exercises: dockerExercises,
   },
   {
     id: 'sql',
@@ -61,7 +72,16 @@ export function findExercise(trackId: string, exerciseId: string): Exercise | un
 
 /** Ejercicio siguiente dentro de la misma pista, o undefined si es el último. */
 export function nextExercise(trackId: LanguageId, exerciseId: string): Exercise | undefined {
+  return neighbours(trackId, exerciseId).next
+}
+
+/** Unidades anterior y siguiente, para navegar sin volver al índice. */
+export function neighbours(
+  trackId: string,
+  exerciseId: string,
+): { previous?: Exercise; next?: Exercise } {
   const exercises = findTrack(trackId)?.exercises ?? []
   const index = exercises.findIndex((exercise) => exercise.id === exerciseId)
-  return index === -1 ? undefined : exercises[index + 1]
+  if (index === -1) return {}
+  return { previous: exercises[index - 1], next: exercises[index + 1] }
 }

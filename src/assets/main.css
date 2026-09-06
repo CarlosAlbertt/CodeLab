@@ -15,10 +15,11 @@
 
   /* Un color por lenguaje, como los puntos de GitHub: identifica la pista de un vistazo. */
   --color-lang-typescript: #4f8ff0;
+  --color-lang-docker: #22c6d6;
   --color-lang-sql: #a78bfa;
   --color-lang-java: #e8963c;
   --color-lang-html: #e5674b;
-  --color-lang-css: #45b8d1;
+  --color-lang-css: #ec6fa9;
 
   --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-mono: ui-monospace, 'JetBrains Mono', 'Cascadia Code', Consolas, monospace;
@@ -27,6 +28,13 @@
 html {
   color-scheme: dark;
   font-size: 16px;
+}
+
+/* Anillo de foco visible para quien navega con teclado. */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 body {

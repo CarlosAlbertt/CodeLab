@@ -1,5 +1,6 @@
 import type { LanguageId, Runner } from '@/types/exercise'
 import { TypeScriptRunner } from './runners/typescript'
+import { DockerfileRunner } from './runners/dockerfile'
 
 /**
  * Runner registry. Adding a language means adding a factory here — the views
@@ -8,6 +9,7 @@ import { TypeScriptRunner } from './runners/typescript'
  */
 const FACTORIES: Partial<Record<LanguageId, () => Runner>> = {
   typescript: () => new TypeScriptRunner(),
+  docker: () => new DockerfileRunner(),
 }
 
 export function createRunner(language: LanguageId): Runner | null {

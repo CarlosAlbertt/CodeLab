@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Genera el bundle de tipos que necesitan tanto los tests como el build.
+      - run: npm run prepare:libs
+
+      - run: npm run typecheck
+
+      # Comprueba que cada solución incluida pasa sus propios tests.
+      - run: npm test
+
+      - run: npx vite build

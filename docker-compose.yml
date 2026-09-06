@@ -1,0 +1,10 @@
+# Aplicación ya construida, servida por nginx. Levantar con:
+#   docker compose up --build
+services:
+  codelab:
+    build: .
+    image: codelab:latest
+    container_name: codelab
+    ports:
+      - '8080:80'
+    restart: unless-stopped

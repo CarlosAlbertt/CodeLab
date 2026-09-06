@@ -1,10 +1,24 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { tracks } from '@/content'
 import { useProgress } from '@/composables/useProgress'
 import { LANGUAGE_STYLE } from '@/utils/tracks'
 
-const { trackProgress } = useProgress()
+const { isRead, nextUp, trackProgress } = useProgress()
+
+const ready = computed(() => tracks.filter((track) => track.status === 'ready'))
+
+/** Pista sobre la que retomar: la primera empezada y sin terminar, o la primera de todas. */
+const resume = computed(() => {
+  const started = ready.value.find((track) => {
+    const { done, total } = trackProgress(track.id)
+    return done > 0 && done < total
+  })
+  const track = started ?? ready.value.find((item) => trackProgress(item.id).done === 0)
+  const exercise = track ? nextUp(track.id) : undefined
+  return track && exercise ? { track, exercise } : undefined
+})
 </script>
 
 <template>
@@ -15,7 +29,26 @@ const { trackProgress } = useProgress()
       Escribes el código, lo ejecutas y ves exactamente qué falla.
     </p>
 
-    <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    <RouterLink
+      v-if="resume"
+      :to="{
+        name: isRead(resume.exercise.id) ? 'exercise' : 'lesson',
+        params: { trackId: resume.track.id, exerciseId: resume.exercise.id },
+      }"
+      class="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl border border-line p-5 transition-colors hover:bg-ink-900"
+      :class="LANGUAGE_STYLE[resume.track.id].border"
+    >
+      <span class="size-2.5 rounded-full" :class="LANGUAGE_STYLE[resume.track.id].dot" />
+      <span class="text-sm uppercase tracking-wider text-muted">
+        {{ trackProgress(resume.track.id).done === 0 ? 'Empezar' : 'Continuar' }}
+      </span>
+      <span class="text-lg">{{ resume.exercise.title }}</span>
+      <span class="ml-auto text-sm" :class="LANGUAGE_STYLE[resume.track.id].text">
+        {{ resume.track.name }} →
+      </span>
+    </RouterLink>
+
+    <ul class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
       <li v-for="track in tracks" :key="track.id">
         <component
           :is="track.status === 'ready' ? RouterLink : 'div'"

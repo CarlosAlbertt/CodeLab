@@ -4,6 +4,7 @@ import { RouterLink } from 'vue-router'
 import { findExercise, findTrack, nextExercise } from '@/content'
 import { createRunner } from '@/engine'
 import { useProgress } from '@/composables/useProgress'
+import { DEFAULT_FILE_NAME, LANGUAGE_STYLE, editorLanguage } from '@/utils/tracks'
 import type { RunResult, Runner } from '@/types/exercise'
 import CodeEditor from '@/components/CodeEditor.vue'
 import MarkdownBlock from '@/components/MarkdownBlock.vue'
@@ -19,6 +20,10 @@ const siguiente = computed(() =>
 )
 
 const { isCompleted, markCompleted, savedCode, saveCode, clearCode } = useProgress()
+
+const fileName = computed(() =>
+  exercise.value ? (exercise.value.fileName ?? DEFAULT_FILE_NAME[exercise.value.language]) : '',
+)
 
 type Tab = 'teoria' | 'enunciado' | 'tests' | 'solucion'
 const tab = ref<Tab>('enunciado')
@@ -218,8 +223,8 @@ const TABS: { id: Tab; label: string }[] = [
         <div class="flex min-h-[420px] flex-col bg-ink-950">
           <div class="flex shrink-0 items-center justify-between gap-3 border-b border-line px-5 py-2.5">
             <span class="flex items-center gap-2.5 font-mono text-sm text-muted">
-              <span class="size-2 rounded-full bg-lang-typescript" />
-              solucion.ts
+              <span class="size-2 rounded-full" :class="LANGUAGE_STYLE[exercise.language].dot" />
+              {{ fileName }}
             </span>
             <div class="flex items-center gap-3">
               <button
@@ -240,7 +245,7 @@ const TABS: { id: Tab; label: string }[] = [
             </div>
           </div>
           <div class="min-h-0 flex-1">
-            <CodeEditor v-model="code" @run="run" />
+            <CodeEditor v-model="code" :language="editorLanguage(fileName)" @run="run" />
           </div>
         </div>
 

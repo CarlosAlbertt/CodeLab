@@ -7,6 +7,8 @@ const STORAGE_KEY = 'codelab:progress:v1'
 interface ProgressEntry {
   /** El ejercicio se ha superado alguna vez con todos los tests en verde. */
   completed: boolean
+  /** Se ha abierto el apartado de teoria de esta unidad. */
+  read?: boolean
   /** Ultimo codigo escrito, para no perderlo al recargar. */
   code?: string
   completedAt?: string
@@ -57,6 +59,16 @@ export function useProgress() {
     item.completedAt = new Date().toISOString()
   }
 
+  const isRead = (exerciseId: string) => state[exerciseId]?.read === true
+
+  const markRead = (exerciseId: string) => {
+    entry(exerciseId).read = true
+  }
+
+  /** Primera unidad de la pista que aun no se ha superado. */
+  const nextUp = (trackId: LanguageId) =>
+    findTrack(trackId)?.exercises.find((exercise) => !isCompleted(exercise.id))
+
   const savedCode = (exerciseId: string) => state[exerciseId]?.code
 
   const saveCode = (exerciseId: string, code: string) => {
@@ -81,5 +93,17 @@ export function useProgress() {
     for (const key of Object.keys(state)) delete state[key]
   }
 
-  return { isCompleted, markCompleted, savedCode, saveCode, clearCode, trackProgress, totalCompleted, resetAll }
+  return {
+    isCompleted,
+    markCompleted,
+    isRead,
+    markRead,
+    nextUp,
+    savedCode,
+    saveCode,
+    clearCode,
+    trackProgress,
+    totalCompleted,
+    resetAll,
+  }
 }

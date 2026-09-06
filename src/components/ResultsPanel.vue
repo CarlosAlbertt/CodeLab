@@ -12,7 +12,7 @@ const passed = computed(() => props.result?.tests.filter((t) => t.status === 'pa
 </script>
 
 <template>
-  <div class="flex h-full flex-col overflow-y-auto">
+  <div class="flex h-full flex-col overflow-y-auto" aria-live="polite">
     <p v-if="running" class="p-5 text-base text-accent">Compilando y ejecutando…</p>
 
     <p v-else-if="!result" class="p-5 text-base text-muted">

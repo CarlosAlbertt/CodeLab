@@ -10,11 +10,11 @@ cero: la primera unidad explica qué es un programa, un valor, una variable y un
 sin dar nada por sabido.
 
 El quiz tiene cuatro formatos: escribir lo que falta, elegir una opción, **arrastrar
-fichas** a los huecos del código y **ordenar líneas** sueltas. Al final de la pista hay un proyecto completo
-que integra todo lo visto. El código se compila y se ejecuta de verdad, y los fallos se
-explican en castellano.
+fichas** a los huecos del código y **ordenar líneas** sueltas. Al final de cada pista hay
+un proyecto completo que integra todo lo visto. El código se comprueba de verdad, y los
+fallos se explican en castellano.
 
-Pistas previstas: **TypeScript** (lista), SQL, Java, HTML y CSS.
+Pistas listas: **TypeScript** y **Docker**. Previstas: SQL, Java, HTML y CSS.
 
 ## Arrancar
 
@@ -25,12 +25,41 @@ npm run dev
 
 Abre http://localhost:5173.
 
+### Con Docker
+
+Sin instalar Node en el equipo:
+
+```bash
+docker compose up --build
+```
+
+Queda en http://localhost:8080. Para desarrollar dentro de un contenedor, con recarga en
+caliente:
+
+```bash
+docker compose -f docker-compose.dev.yml up
+```
+
+El `Dockerfile` es multi-stage: Node construye la aplicación y la imagen final es solo
+nginx más la carpeta `dist`. Es, además, el proyecto final de la pista de Docker.
+
 | Comando | Qué hace |
 | --- | --- |
 | `npm run dev` | Servidor de desarrollo (genera antes el bundle de tipos). |
 | `npm run build` | Typecheck + build de producción en `dist/`. |
-| `npm test` | Verifica que **cada solución incluida pasa sus propios tests** y que los quiz están bien formados. |
+| `npm test` | Verifica que **cada solución incluida pasa sus propios tests**, que las plantillas iniciales no, y que los quiz están bien formados. |
 | `npm run typecheck` | Solo `vue-tsc --noEmit`. |
+
+## Cómo se corrige cada pista
+
+Cada lenguaje registra un **motor** en `src/engine/index.ts`; el resto de la aplicación no
+cambia.
+
+- **TypeScript** — se compila y se ejecuta de verdad (ver abajo).
+- **Docker** — no hay demonio en el navegador, así que los ejercicios se corrigen
+  **leyendo el fichero**: un parser de Dockerfile saca las instrucciones con su número de
+  línea, y cada test comprueba una cosa concreta (que `npm ci` vaya antes de `COPY . .`,
+  que la segunda etapa copie con `--from`, que `CMD` use la forma de lista...).
 
 ## Cómo funciona la pista de TypeScript
 
@@ -105,6 +134,12 @@ src/
 
 Para añadir un lenguaje basta con escribir sus ejercicios y registrar un `Runner` en
 `src/engine/index.ts`. El resto de la aplicación no cambia.
+
+## Contenido de la pista de Docker
+
+Cinco unidades — qué es un contenedor, capas y caché, `CMD`/`ENV`/`EXPOSE`, multi-stage y
+`docker compose` — y un proyecto final: escribir el Dockerfile de esta misma aplicación,
+que luego puedes comparar con el que hay en la raíz.
 
 ## Siguientes pasos
 

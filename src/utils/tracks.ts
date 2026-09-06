@@ -11,6 +11,11 @@ export const LANGUAGE_STYLE: Record<LanguageId, { dot: string; text: string; bor
     text: 'text-lang-typescript',
     border: 'hover:border-lang-typescript/50',
   },
+  docker: {
+    dot: 'bg-lang-docker',
+    text: 'text-lang-docker',
+    border: 'hover:border-lang-docker/50',
+  },
   sql: { dot: 'bg-lang-sql', text: 'text-lang-sql', border: 'hover:border-lang-sql/50' },
   java: { dot: 'bg-lang-java', text: 'text-lang-java', border: 'hover:border-lang-java/50' },
   html: { dot: 'bg-lang-html', text: 'text-lang-html', border: 'hover:border-lang-html/50' },
@@ -24,3 +29,20 @@ export const DIFFICULTY: Record<Difficulty, { label: string; badge: string }> = 
 }
 
 export const PROJECT_BADGE = 'border-lang-sql/40 bg-lang-sql/10 text-lang-sql'
+
+/** Nombre por defecto del fichero que se edita en cada pista. */
+export const DEFAULT_FILE_NAME: Record<LanguageId, string> = {
+  typescript: 'solucion.ts',
+  docker: 'Dockerfile',
+  sql: 'consulta.sql',
+  java: 'Solucion.java',
+  html: 'index.html',
+  css: 'estilos.css',
+}
+
+/** Resaltado del editor, deducido del nombre del fichero. */
+export function editorLanguage(fileName: string): 'typescript' | 'dockerfile' | 'yaml' {
+  if (fileName === 'Dockerfile' || fileName.endsWith('.dockerfile')) return 'dockerfile'
+  if (fileName.endsWith('.yml') || fileName.endsWith('.yaml')) return 'yaml'
+  return 'typescript'
+}

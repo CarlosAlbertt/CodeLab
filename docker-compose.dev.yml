@@ -1,0 +1,17 @@
+# Entorno de desarrollo con recarga en caliente, sin instalar Node en el equipo:
+#   docker compose -f docker-compose.dev.yml up
+services:
+  codelab-dev:
+    image: node:22-alpine
+    working_dir: /app
+    command: sh -c "npm ci && npm run dev -- --host 0.0.0.0"
+    volumes:
+      - .:/app
+      # Volumen propio para node_modules: así el del contenedor no pisa el del equipo
+      # (ni al revés), que es el error clásico al montar el proyecto entero.
+      - node_modules:/app/node_modules
+    ports:
+      - '5173:5173'
+
+volumes:
+  node_modules:

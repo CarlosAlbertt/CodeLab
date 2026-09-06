@@ -3,7 +3,7 @@
  * specific language: it only knows about exercises, runners and run results.
  */
 
-export type LanguageId = 'typescript' | 'java' | 'sql' | 'html' | 'css'
+export type LanguageId = 'typescript' | 'docker' | 'sql' | 'java' | 'html' | 'css'
 
 /** Difficulty: 1 = introduccion, 2 = practica, 3 = reto. */
 export type Difficulty = 1 | 2 | 3
@@ -11,8 +11,13 @@ export type Difficulty = 1 | 2 | 3
 export interface TestCase {
   /** Texto que ve el alumno en la lista de resultados. */
   name: string
-  /** Codigo de comprobacion, escrito en el lenguaje del ejercicio. */
+  /** Codigo de comprobacion, o su descripcion cuando no se ejecuta codigo. */
   code: string
+  /**
+   * Comprobacion programatica para motores que analizan el texto en vez de
+   * ejecutarlo (Docker). Devuelve el fallo, o null si la comprobacion pasa.
+   */
+  check?: (source: string) => string | null
 }
 
 interface QuizBase {
@@ -78,6 +83,8 @@ export interface Exercise {
   brief: string
   /** Repaso rápido entre la teoría y el caso práctico. */
   quiz: QuizQuestion[]
+  /** Nombre del fichero que se edita; decide el resaltado. Por defecto, el de la pista. */
+  fileName?: string
   starterCode: string
   solution: string
   hints: string[]
