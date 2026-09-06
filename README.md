@@ -14,7 +14,7 @@ fichas** a los huecos del código y **ordenar líneas** sueltas. Al final de cad
 un proyecto completo que integra todo lo visto. El código se comprueba de verdad, y los
 fallos se explican en castellano.
 
-Pistas listas: **TypeScript** y **Docker**. Previstas: SQL, Java, HTML y CSS.
+Pistas listas: **TypeScript**, **SQL** y **Docker**. Previstas: Java, HTML y CSS.
 
 ## Arrancar
 
@@ -70,6 +70,9 @@ Cada lenguaje registra un **motor** en `src/engine/index.ts`; el resto de la apl
 cambia.
 
 - **TypeScript** — se compila y se ejecuta de verdad (ver abajo).
+- **SQL** — se ejecuta contra una base de datos real: SQLite compilado a WebAssembly
+  (`sql.js`), en un worker. Cada ejercicio parte del mismo esquema de clínica, y las
+  comprobaciones miran las filas devueltas, no el texto de la consulta.
 - **Docker** — no hay demonio en el navegador, así que los ejercicios se corrigen
   **leyendo el fichero**: un parser de Dockerfile saca las instrucciones con su número de
   línea, y cada test comprueba una cosa concreta (que `npm ci` vaya antes de `COPY . .`,
@@ -148,6 +151,16 @@ src/
 
 Para añadir un lenguaje basta con escribir sus ejercicios y registrar un `Runner` en
 `src/engine/index.ts`. El resto de la aplicación no cambia.
+
+## Contenido de la pista de SQL
+
+Nueve unidades — `SELECT`, `WHERE`, `ORDER BY`, agregación, `GROUP BY`, `JOIN`,
+`LEFT JOIN`, subconsultas y `INSERT`/`UPDATE`/`DELETE` — y un proyecto final: un informe
+de actividad por ciudad que necesita casi todo a la vez.
+
+Todas parten de la misma base de datos (`src/content/sql/schema.ts`): pacientes y citas de
+una clínica, con los casos límite metidos a propósito — un paciente sin ninguna cita, dos
+ciudades empatadas, citas canceladas que no deben contar.
 
 ## Contenido de la pista de Docker
 

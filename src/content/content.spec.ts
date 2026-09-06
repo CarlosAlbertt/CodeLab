@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 import { compileAndRun } from '@/engine/worker/core'
 import { DockerfileRunner } from '@/engine/runners/dockerfile'
+import { runSql, setWasmLocation } from '@/engine/sql/core'
 import { correctAnswerText, initialAnswer, isQuestionCorrect } from '@/utils/quiz'
 import { tracks } from '@/content'
 import type { Exercise, RunResult } from '@/types/exercise'
@@ -20,10 +21,32 @@ const libText = readFileSync(
 
 const dockerRunner = new DockerfileRunner()
 
-function run(exercise: Exercise, code: string): Promise<RunResult> {
-  return exercise.language === 'docker'
-    ? dockerRunner.run(exercise, code)
-    : compileAndRun(libText, code, exercise.tests)
+// En Node no hay bundler que resuelva el .wasm: se apunta directamente al fichero.
+setWasmLocation(join(process.cwd(), 'node_modules', 'sql.js', 'dist', 'sql-wasm.wasm'))
+
+/** Ejecuta el ejercicio con el motor de su pista y normaliza el resultado. */
+async function run(exercise: Exercise, code: string): Promise<RunResult> {
+  if (exercise.language === 'docker') return dockerRunner.run(exercise, code)
+
+  if (exercise.language === 'sql') {
+    const outcome = await runSql(exercise.setup ?? '', code, exercise.verify)
+    const tests = exercise.tests.map((test) => {
+      const failure = test.check ? test.check(code, outcome.result) : 'sin comprobación'
+      return failure === null
+        ? { name: test.name, status: 'pass' as const }
+        : { name: test.name, status: 'fail' as const, message: failure }
+    })
+    const failed = outcome.diagnostics.some((d) => d.severity === 'error')
+    return {
+      ok: !failed && tests.length > 0 && tests.every((test) => test.status === 'pass'),
+      diagnostics: outcome.diagnostics,
+      logs: [],
+      tests: failed ? [] : tests,
+      durationMs: 0,
+    }
+  }
+
+  return compileAndRun(libText, code, exercise.tests)
 }
 
 const ready = tracks.filter((track) => track.status === 'ready')

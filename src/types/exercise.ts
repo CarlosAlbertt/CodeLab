@@ -14,10 +14,12 @@ export interface TestCase {
   /** Codigo de comprobacion, o su descripcion cuando no se ejecuta codigo. */
   code: string
   /**
-   * Comprobacion programatica para motores que analizan el texto en vez de
-   * ejecutarlo (Docker). Devuelve el fallo, o null si la comprobacion pasa.
+   * Comprobacion programatica para los motores que no ejecutan codigo del
+   * alumno linea a linea. Recibe lo que escribio y, si el motor lo produce,
+   * su resultado (por ejemplo las filas devueltas por una consulta).
+   * Devuelve el fallo, o null si la comprobacion pasa.
    */
-  check?: (source: string) => string | null
+  check?: (source: string, output?: unknown) => string | null
 }
 
 interface QuizBase {
@@ -85,6 +87,10 @@ export interface Exercise {
   quiz: QuizQuestion[]
   /** Nombre del fichero que se edita; decide el resaltado. Por defecto, el de la pista. */
   fileName?: string
+  /** Codigo que el motor ejecuta antes que el del alumno (el esquema, en SQL). */
+  setup?: string
+  /** Consulta que se ejecuta despues, cuando lo que se corrige es el efecto y no el resultado. */
+  verify?: string
   starterCode: string
   solution: string
   hints: string[]

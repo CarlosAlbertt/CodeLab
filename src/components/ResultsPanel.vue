@@ -2,10 +2,15 @@
 import { computed } from 'vue'
 import type { RunResult } from '@/types/exercise'
 
-const props = defineProps<{
-  result: RunResult | null
-  running: boolean
-}>()
+const props = withDefaults(
+  defineProps<{
+    result: RunResult | null
+    running: boolean
+    /** Cómo se llaman los errores en esta pista: "de compilación", "en la consulta"... */
+    errorLabel?: string
+  }>(),
+  { errorLabel: '' },
+)
 
 const errors = computed(() => props.result?.diagnostics.filter((d) => d.severity === 'error') ?? [])
 const passed = computed(() => props.result?.tests.filter((t) => t.status === 'pass').length ?? 0)
@@ -35,7 +40,7 @@ const passed = computed(() => props.result?.tests.filter((t) => t.status === 'pa
       >
         <span>
           <template v-if="errors.length">
-            {{ errors.length }} error{{ errors.length === 1 ? '' : 'es' }} de compilación
+            {{ errors.length }} error{{ errors.length === 1 ? '' : 'es' }} {{ errorLabel }}
           </template>
           <template v-else-if="result.ok">Todo correcto</template>
           <template v-else>{{ passed }} de {{ result.tests.length }} tests correctos</template>

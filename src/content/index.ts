@@ -1,5 +1,6 @@
 import type { Exercise, LanguageId, Track } from '@/types/exercise'
 import { dockerExercises } from './docker'
+import { sqlExercises } from './sql'
 import { typescriptExercises } from './typescript'
 
 /**
@@ -32,9 +33,11 @@ export const tracks: Track[] = [
     id: 'sql',
     name: 'SQL',
     tagline: 'Consultar y modelar datos',
-    description: 'SELECT, JOIN, agregaciones, subconsultas e índices sobre una base de datos real en el navegador.',
-    status: 'soon',
-    exercises: [],
+    description:
+      'SELECT, WHERE, agregaciones, JOIN y subconsultas sobre una base de datos real: SQLite ' +
+      'compilado a WebAssembly, corriendo entero en el navegador.',
+    status: 'ready',
+    exercises: sqlExercises,
   },
   {
     id: 'java',

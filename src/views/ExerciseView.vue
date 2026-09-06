@@ -4,7 +4,7 @@ import { RouterLink } from 'vue-router'
 import { findExercise, findTrack, nextExercise } from '@/content'
 import { createRunner } from '@/engine'
 import { useProgress } from '@/composables/useProgress'
-import { DEFAULT_FILE_NAME, LANGUAGE_STYLE, editorLanguage } from '@/utils/tracks'
+import { DEFAULT_FILE_NAME, ERROR_LABEL, LANGUAGE_STYLE, editorLanguage } from '@/utils/tracks'
 import type { RunResult, Runner } from '@/types/exercise'
 import CodeEditor from '@/components/CodeEditor.vue'
 import MarkdownBlock from '@/components/MarkdownBlock.vue'
@@ -261,7 +261,11 @@ const TABS: { id: Tab; label: string }[] = [
             </RouterLink>
           </div>
           <div class="min-h-0 flex-1">
-            <ResultsPanel :result="result" :running="running" />
+            <ResultsPanel
+              :result="result"
+              :running="running"
+              :error-label="ERROR_LABEL[exercise.language]"
+            />
           </div>
         </div>
       </section>

@@ -41,8 +41,19 @@ export const DEFAULT_FILE_NAME: Record<LanguageId, string> = {
 }
 
 /** Resaltado del editor, deducido del nombre del fichero. */
-export function editorLanguage(fileName: string): 'typescript' | 'dockerfile' | 'yaml' {
+export function editorLanguage(fileName: string): 'typescript' | 'dockerfile' | 'yaml' | 'sql' {
   if (fileName === 'Dockerfile' || fileName.endsWith('.dockerfile')) return 'dockerfile'
   if (fileName.endsWith('.yml') || fileName.endsWith('.yaml')) return 'yaml'
+  if (fileName.endsWith('.sql')) return 'sql'
   return 'typescript'
+}
+
+/** Cómo llamar a los errores previos a la ejecución en cada pista. */
+export const ERROR_LABEL: Record<LanguageId, string> = {
+  typescript: 'de compilación',
+  docker: 'en el Dockerfile',
+  sql: 'en la consulta',
+  java: 'de compilación',
+  html: 'en el HTML',
+  css: 'en el CSS',
 }
