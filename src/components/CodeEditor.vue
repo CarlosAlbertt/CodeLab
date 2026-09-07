@@ -12,13 +12,14 @@ import { StreamLanguage } from '@codemirror/language'
 import { dockerFile } from '@codemirror/legacy-modes/mode/dockerfile'
 import { yaml } from '@codemirror/legacy-modes/mode/yaml'
 import { sqlite } from '@codemirror/legacy-modes/mode/sql'
+import { java } from '@codemirror/legacy-modes/mode/clike'
 import { oneDark } from '@codemirror/theme-one-dark'
 
 const props = withDefaults(
   defineProps<{
     modelValue: string
     readonly?: boolean
-    language?: 'typescript' | 'dockerfile' | 'yaml' | 'sql' | 'html' | 'css'
+    language?: 'typescript' | 'dockerfile' | 'yaml' | 'sql' | 'html' | 'css' | 'java'
   }>(),
   { readonly: false, language: 'typescript' },
 )
@@ -27,6 +28,7 @@ function languageExtension() {
   if (props.language === 'dockerfile') return StreamLanguage.define(dockerFile)
   if (props.language === 'yaml') return StreamLanguage.define(yaml)
   if (props.language === 'sql') return StreamLanguage.define(sqlite)
+  if (props.language === 'java') return StreamLanguage.define(java)
   if (props.language === 'html') return html()
   if (props.language === 'css') return css()
   return javascript({ typescript: true })

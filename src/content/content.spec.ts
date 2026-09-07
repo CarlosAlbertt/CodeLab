@@ -52,8 +52,10 @@ async function run(exercise: Exercise, code: string): Promise<RunResult> {
   return compileAndRun(libText, code, exercise.tests)
 }
 
-// HTML necesita un DOM de verdad: se comprueba en html.spec.ts, bajo jsdom.
-const ready = tracks.filter((track) => track.status === 'ready' && track.id !== 'html')
+// HTML necesita un DOM (html.spec.ts, bajo jsdom) y Java el servicio local
+// (java.spec.ts, que se salta solo si no está arrancado).
+const APARTE = new Set(['html', 'java'])
+const ready = tracks.filter((track) => track.status === 'ready' && !APARTE.has(track.id))
 
 describe.each(ready)('pista de $name', (track) => {
   it('tiene ejercicios', () => {

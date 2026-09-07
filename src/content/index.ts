@@ -2,6 +2,7 @@ import type { Exercise, LanguageId, Track } from '@/types/exercise'
 import { dockerExercises } from './docker'
 import { cssExercises } from './css'
 import { htmlExercises } from './html'
+import { javaExercises } from './java'
 import { sqlExercises } from './sql'
 import { typescriptExercises } from './typescript'
 
@@ -45,9 +46,11 @@ export const tracks: Track[] = [
     id: 'java',
     name: 'Java',
     tagline: 'Orientación a objetos y colecciones',
-    description: 'Clases, interfaces, colecciones, streams y excepciones, compilados y probados con JUnit.',
-    status: 'soon',
-    exercises: [],
+    description:
+      'Tipos, clases, colecciones, interfaces y excepciones. Es la única pista que necesita ' +
+      'un servicio local: se compila y se ejecuta con el JDK de tu equipo.',
+    status: 'ready',
+    exercises: javaExercises,
   },
   {
     id: 'html',

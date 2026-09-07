@@ -4,6 +4,7 @@ import { DockerfileRunner } from './runners/dockerfile'
 import { SqlRunner } from './runners/sql'
 import { HtmlRunner } from './runners/html'
 import { CssRunner } from './runners/css'
+import { JavaRunner } from './runners/java'
 
 /**
  * Runner registry. Adding a language means adding a factory here — the views
@@ -16,6 +17,7 @@ const FACTORIES: Partial<Record<LanguageId, () => Runner>> = {
   sql: () => new SqlRunner(),
   html: () => new HtmlRunner(),
   css: () => new CssRunner(),
+  java: () => new JavaRunner(),
 }
 
 export function createRunner(language: LanguageId): Runner | null {
