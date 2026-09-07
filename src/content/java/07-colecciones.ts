@@ -1,7 +1,7 @@
 import type { Exercise } from '@/types/exercise'
 
 export const exercise: Exercise = {
-  id: 'java-04-colecciones',
+  id: 'java-07-colecciones',
   language: 'java',
   title: 'Colecciones: List y Map',
   difficulty: 2,

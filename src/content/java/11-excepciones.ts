@@ -1,7 +1,7 @@
 import type { Exercise } from '@/types/exercise'
 
 export const exercise: Exercise = {
-  id: 'java-06-excepciones',
+  id: 'java-11-excepciones',
   language: 'java',
   title: 'Excepciones',
   difficulty: 2,

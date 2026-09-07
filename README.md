@@ -198,11 +198,26 @@ en su campo `setup`, y el alumno solo escribe los estilos.
 
 ## Contenido de la pista de Java
 
-Seis unidades — tipos y métodos, condicionales y bucles, clases y objetos, colecciones,
-interfaces y polimorfismo, y excepciones — y un proyecto final: la misma agenda de la
-clínica que hiciste en TypeScript, ahora en Java. Compararlas es parte del ejercicio: el
-problema es idéntico y las decisiones cambian (uniones discriminadas frente a excepciones,
-objetos literales frente a campos privados).
+Doce unidades, de menos a más:
+
+| | Unidad | De qué va |
+| --- | --- | --- |
+| 01 | Tipos, variables y métodos | qué cambia respecto a TypeScript |
+| 02 | Condicionales y bucles | `equals` frente a `==`, condiciones `boolean` |
+| 03 | Clases y objetos | constructor, `private`, `this` |
+| 04 | Herencia y clases abstractas | `extends`, `super`, `abstract` |
+| 05 | Interfaces y polimorfismo | `implements`, `@Override` |
+| 06 | Enums y records | tipos cerrados e inmutabilidad |
+| 07 | Colecciones | `List`, `Map`, genéricos |
+| 08 | equals, hashCode y ordenación | `Comparable`, `Comparator` |
+| 09 | Lambdas y streams | `filter`, `map`, `collect` |
+| 10 | Optional y el manejo de null | encadenar sin `if` |
+| 11 | Excepciones | comprobadas y no comprobadas |
+| 12 | Genéricos propios | `<T>`, `extends`, comodines, borrado |
+
+Y un proyecto final: la misma agenda de la clínica que hiciste en TypeScript, ahora con
+`enum`, `record`, `Optional` y streams. Compararlas es parte del ejercicio, porque el
+problema es idéntico y casi todas las decisiones cambian.
 
 ## Contenido de la pista de Docker
 
