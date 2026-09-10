@@ -122,3 +122,42 @@ body {
 .cm-editor.cm-focused {
   outline: none;
 }
+
+/* Modo lección: el texto de cada paso y las preguntas se ven más grandes. */
+.lesson-prose.prose-lab {
+  font-size: 1.1875rem;
+}
+.lesson-quiz pre {
+  font-size: 1.0625rem;
+  padding: 1.25rem 1.5rem;
+  line-height: 2;
+  border-radius: 12px;
+}
+.lesson-quiz button,
+.lesson-quiz input,
+.lesson-quiz code {
+  font-size: 1rem;
+}
+
+/* Cierre de la lección: una sola entrada orquestada, no animaciones sueltas. */
+@keyframes cl-medalla {
+  0% { transform: scale(0.6); opacity: 0; }
+  70% { transform: scale(1.06); opacity: 1; }
+  100% { transform: scale(1); }
+}
+@keyframes cl-sube {
+  from { transform: translateY(12px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+.cl-medalla {
+  animation: cl-medalla 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.cl-sube {
+  animation: cl-sube 420ms ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cl-medalla,
+  .cl-sube {
+    animation: none;
+  }
+}

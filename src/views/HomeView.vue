@@ -5,7 +5,7 @@ import { tracks } from '@/content'
 import { useProgress } from '@/composables/useProgress'
 import { LANGUAGE_STYLE } from '@/utils/tracks'
 
-const { isRead, nextUp, trackProgress } = useProgress()
+const { isLessonDone, nextUp, trackProgress } = useProgress()
 
 const ready = computed(() => tracks.filter((track) => track.status === 'ready'))
 
@@ -32,7 +32,7 @@ const resume = computed(() => {
     <RouterLink
       v-if="resume"
       :to="{
-        name: isRead(resume.exercise.id) ? 'exercise' : 'lesson',
+        name: isLessonDone(resume.exercise.id) ? 'exercise' : 'lesson',
         params: { trackId: resume.track.id, exerciseId: resume.exercise.id },
       }"
       class="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl border border-line p-5 transition-colors hover:bg-ink-900"

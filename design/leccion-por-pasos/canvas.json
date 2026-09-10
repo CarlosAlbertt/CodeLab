@@ -1,0 +1,25 @@
+{
+  "pages": [
+    { "id": "leccion", "name": "Lección por pasos" },
+    { "id": "app", "name": "Portada, pista y práctica" }
+  ],
+  "artboards": [
+    { "file": "LeccionConcepto.dc.html", "title": "1 · Concepto", "x": 0, "y": 0, "w": 1440, "h": 900, "page": "leccion" },
+    { "file": "LeccionEjercicio.dc.html", "title": "2 · Ejercicio", "x": 1520, "y": 0, "w": 1440, "h": 900, "page": "leccion" },
+    { "file": "LeccionAcierto.dc.html", "title": "3a · Acierto", "x": 3040, "y": 0, "w": 1440, "h": 900, "page": "leccion" },
+    { "file": "LeccionFallo.dc.html", "title": "3b · Fallo", "x": 4560, "y": 0, "w": 1440, "h": 900, "page": "leccion" },
+    { "file": "LeccionCompletada.dc.html", "title": "4 · Lección completada", "x": 0, "y": 1080, "w": 1440, "h": 900, "page": "leccion" },
+    { "file": "LeccionMovil.dc.html", "title": "Ejercicio en móvil", "x": 1520, "y": 1080, "w": 390, "h": 844, "page": "leccion" },
+    { "file": "Main.dc.html", "title": "Portada", "x": 0, "y": 0, "w": 1440, "h": 1040, "page": "app" },
+    { "file": "Pista.dc.html", "title": "Pista", "x": 1520, "y": 0, "w": 1440, "h": 1320, "page": "app" },
+    { "file": "Practica.dc.html", "title": "Caso práctico", "x": 3040, "y": 0, "w": 1440, "h": 900, "page": "app" }
+  ],
+  "annotations": [
+    { "id": "ritmo", "x": 0, "y": -240, "w": 420, "page": "leccion", "text": "Una idea por pantalla. La teoría larga + quiz al final pasa a ser unos 8 pasos de 20-30 segundos: concepto, ejercicio, respuesta al momento. Unos 4 minutos por unidad." },
+    { "id": "fallar", "x": 3040, "y": -240, "w": 440, "page": "leccion", "text": "Fallar no cuesta nada: sin corazones ni llaves, que es lo más criticado de Mimo.\nEnseñar qué habría salido con tu respuesta explica el error mejor que un simple 'incorrecto'." },
+    { "id": "movil", "x": 2000, "y": 1080, "w": 360, "page": "leccion", "text": "En móvil las fichas bajan a la zona del pulgar y el botón ocupa todo el ancho. Comprobar se queda apagado hasta colocar una ficha." },
+    { "id": "portada", "x": 0, "y": -220, "w": 420, "page": "app", "text": "La portada responde a una sola pregunta: qué hago ahora. Racha y meta diaria, sin ligas ni clasificaciones." },
+    { "id": "tests", "x": 3040, "y": -220, "w": 440, "page": "app", "text": "Los tests son el enunciado: cada requisito se marca solo al ejecutar, así que ya no hay que leer dos listas." }
+  ],
+  "launch": { "view": "canvas", "page": "leccion" }
+}

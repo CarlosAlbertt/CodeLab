@@ -9,6 +9,10 @@ interface ProgressEntry {
   completed: boolean
   /** Se ha abierto el apartado de teoria de esta unidad. */
   read?: boolean
+  /** Paso de la lección por el que se va, para retomarla donde se dejó. */
+  lessonStep?: number
+  /** La lección por pasos se ha terminado al menos una vez. */
+  lessonDone?: boolean
   /** Ultimo codigo escrito, para no perderlo al recargar. */
   code?: string
   completedAt?: string
@@ -65,6 +69,18 @@ export function useProgress() {
     entry(exerciseId).read = true
   }
 
+  const lessonStep = (exerciseId: string) => state[exerciseId]?.lessonStep ?? 0
+
+  const saveLessonStep = (exerciseId: string, step: number) => {
+    entry(exerciseId).lessonStep = step
+  }
+
+  const isLessonDone = (exerciseId: string) => state[exerciseId]?.lessonDone === true
+
+  const markLessonDone = (exerciseId: string) => {
+    entry(exerciseId).lessonDone = true
+  }
+
   /** Primera unidad de la pista que aun no se ha superado. */
   const nextUp = (trackId: LanguageId) =>
     findTrack(trackId)?.exercises.find((exercise) => !isCompleted(exercise.id))
@@ -98,6 +114,10 @@ export function useProgress() {
     markCompleted,
     isRead,
     markRead,
+    lessonStep,
+    saveLessonStep,
+    isLessonDone,
+    markLessonDone,
     nextUp,
     savedCode,
     saveCode,

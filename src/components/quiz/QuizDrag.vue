@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import type { DragQuestion } from '@/types/exercise'
-import { splitSnippet } from '@/utils/quiz'
+import { shuffle, splitSnippet } from '@/utils/quiz'
 
 const props = defineProps<{
   question: DragQuestion
@@ -11,9 +11,16 @@ const props = defineProps<{
 const emit = defineEmits<{ 'update:answer': [value: (number | null)[]] }>()
 
 const parts = computed(() => splitSnippet(props.question.snippet))
+/**
+ * Orden en que se ofrecen las fichas, barajado al montar la pregunta: en el
+ * orden del autor, la respuesta saldría colocando las fichas en fila.
+ */
+const order = shuffle(props.question.pool.map((_, index) => index))
 /** Fichas que siguen sin colocar. */
 const available = computed(() =>
-  props.question.pool.map((token, index) => ({ token, index })).filter((item) => !props.answer.includes(item.index)),
+  order
+    .map((index) => ({ token: props.question.pool[index]!, index }))
+    .filter((item) => !props.answer.includes(item.index)),
 )
 
 const dragging = ref<number | null>(null)

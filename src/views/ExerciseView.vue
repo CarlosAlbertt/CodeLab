@@ -132,7 +132,7 @@ const TABS: { id: Tab; label: string }[] = [
           :to="{ name: 'lesson', params: { trackId: track.id, exerciseId: exercise.id } }"
           class="rounded-md border border-line px-3 py-1.5 text-sm text-muted transition-colors hover:border-fg/30 hover:text-fg"
         >
-          Repasar la teoría
+          Repasar la lección
         </RouterLink>
         <LevelBadge :difficulty="exercise.difficulty" :kind="exercise.kind" />
       </div>

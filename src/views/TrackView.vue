@@ -5,6 +5,8 @@ import { findTrack } from '@/content'
 import { useProgress } from '@/composables/useProgress'
 import { LANGUAGE_STYLE } from '@/utils/tracks'
 import LevelBadge from '@/components/LevelBadge.vue'
+import { buildLessonSteps } from '@/utils/lessonSteps'
+import type { Exercise } from '@/types/exercise'
 
 const props = defineProps<{ trackId: string }>()
 
@@ -13,8 +15,15 @@ const track = computed(() => findTrack(props.trackId))
 const units = computed(() => track.value?.exercises.filter((item) => item.kind !== 'project') ?? [])
 const project = computed(() => track.value?.exercises.find((item) => item.kind === 'project'))
 
-const { isCompleted, isRead, nextUp, trackProgress } = useProgress()
+const { isCompleted, isLessonDone, lessonStep, nextUp, trackProgress } = useProgress()
 const pending = computed(() => (track.value ? nextUp(track.value.id) : undefined))
+/** "Lección", o por qué paso se va si está a medias. */
+function lessonLabel(exercise: Exercise): string {
+  const step = lessonStep(exercise.id)
+  if (isLessonDone(exercise.id) || step === 0) return 'Lección'
+  return `Lección ${step + 1}/${buildLessonSteps(exercise).length}`
+}
+
 const progress = computed(() => (track.value ? trackProgress(track.value.id) : { done: 0, total: 0 }))
 </script>
 
@@ -46,7 +55,7 @@ const progress = computed(() => (track.value ? trackProgress(track.value.id) : {
     <RouterLink
       v-if="pending"
       :to="{
-        name: isRead(pending.id) ? 'exercise' : 'lesson',
+        name: isLessonDone(pending.id) ? 'exercise' : 'lesson',
         params: { trackId: track.id, exerciseId: pending.id },
       }"
       class="mt-6 inline-flex items-center gap-3 rounded-lg border border-accent/40 bg-accent/15 px-5 py-3 text-base text-accent transition-colors hover:bg-accent/25"
@@ -87,17 +96,17 @@ const progress = computed(() => (track.value ? trackProgress(track.value.id) : {
         <LevelBadge :difficulty="exercise.difficulty" />
 
         <span class="flex shrink-0 items-center gap-3 text-sm">
-          <!-- La teoría ya leída se apaga: así destaca lo que queda por hacer. -->
+          <!-- La lección terminada se apaga: así destaca lo que queda por hacer. -->
           <RouterLink
             :to="{ name: 'lesson', params: { trackId: track.id, exerciseId: exercise.id } }"
             class="rounded-md border px-3 py-1.5 transition-colors"
             :class="
-              isRead(exercise.id)
+              isLessonDone(exercise.id)
                 ? 'border-line text-muted hover:border-fg/30 hover:text-fg'
                 : 'border-accent/40 bg-accent/10 text-accent hover:bg-accent/20'
             "
           >
-            Teoría
+            {{ lessonLabel(exercise) }}
           </RouterLink>
           <RouterLink
             :to="{ name: 'exercise', params: { trackId: track.id, exerciseId: exercise.id } }"

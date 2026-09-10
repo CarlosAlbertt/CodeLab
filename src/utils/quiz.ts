@@ -69,6 +69,20 @@ export function isQuestionCorrect(question: QuizQuestion, answer: QuizAnswer): b
   }
 }
 
+/** Si ya hay algo que comprobar: mientras no lo haya, Comprobar se queda apagado. */
+export function hasAnswer(question: QuizQuestion, answer: QuizAnswer): boolean {
+  switch (question.kind) {
+    case 'fill':
+      return typeof answer === 'string' && answer.trim() !== ''
+    case 'choice':
+      return typeof answer === 'number'
+    case 'drag':
+      return Array.isArray(answer) && answer.every((value) => value !== null && value !== undefined)
+    case 'order':
+      return Array.isArray(answer)
+  }
+}
+
 /** Texto de la respuesta correcta, para mostrarla cuando el alumno se rinde. */
 export function correctAnswerText(question: QuizQuestion): string {
   switch (question.kind) {

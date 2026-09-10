@@ -14,8 +14,10 @@ export const router = createRouter({
     {
       path: '/pista/:trackId/:exerciseId/teoria',
       name: 'lesson',
-      component: () => import('@/views/LessonView.vue'),
+      component: () => import('@/views/LessonStepsView.vue'),
       props: true,
+      // Pantalla completa: sin cabecera, toda la atención para el paso actual.
+      meta: { focus: true },
     },
     {
       path: '/pista/:trackId/:exerciseId',

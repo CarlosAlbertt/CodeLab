@@ -2,7 +2,7 @@
 
 Aplicación local para aprender a programar. Cada pista se recorre igual:
 
-**teoría → quiz de repaso → caso práctico → ... → proyecto final**
+**lección por pasos → caso práctico → ... → proyecto final**
 
 Cada unidad tiene su apartado de teoría (con ejemplos y errores típicos), un quiz de
 repaso y, detrás, un caso práctico con editor, tests y solución. La pista empieza desde
@@ -81,6 +81,23 @@ nginx más la carpeta `dist`. Es, además, el proyecto final de la pista de Dock
 | `npm run build` | Typecheck + build de producción en `dist/`. |
 | `npm test` | Verifica que **cada solución incluida pasa sus propios tests**, que las plantillas iniciales no, y que los quiz están bien formados. Los casos de Java se saltan solos si el servicio no está arrancado. |
 | `npm run typecheck` | Solo `vue-tsc --noEmit`. |
+
+## Modo lección
+
+Cada unidad se recorre en pasos cortos: una tarjeta con una idea, una pregunta sobre lo que
+acabas de leer y la respuesta al momento. Fallar no cuesta nada: se reintenta o se mira la
+respuesta, y al terminar se puede repasar solo lo que se falló.
+
+Los pasos no se escriben aparte: salen del contenido que ya existe
+(`src/utils/lessonSteps.ts`). Cada apartado `##` de la teoría es una tarjeta, y cada pregunta
+del quiz se coloca detrás del primer apartado que ya menciona su respuesta; si no hay pista
+en el texto, se reparte en proporción, nunca antes del segundo apartado.
+
+La lección recuerda por qué paso ibas. Cada acierto suma XP (10 a la primera, 5 tras
+reintentar, 20 al terminar la lección por primera vez) y los XP de cada día mantienen la
+racha. Todo se guarda en el navegador, sin backend.
+
+El boceto de la interfaz está en `design/leccion-por-pasos/`.
 
 ## Cómo se corrige cada pista
 
